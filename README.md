@@ -34,13 +34,13 @@ In Google Cloud:
 ```mermaid
 flowchart LR
   subgraph Google Cloud
-    subgraph Google Kubernetes Engine
+    subgraph gke [Google Kubernetes Engine]
       ingress-nginx
     end
-    subgraph Google Artifact Registry
+    subgraph gar [Google Artifact Registry]
       containers
     end
-    subgraph Cloud NAT
+    subgraph cloud-nat [Cloud NAT]
     end
     subgraph Google Service Accounts
       gke_nodes
@@ -48,6 +48,9 @@ flowchart LR
       gke_logging_access
       gke_cluster_access
     end
+    gke-->gke_nodes
+    gke_nodes-->cloud-nat
+    gke_nodes-->gar
   end
 ```
 
