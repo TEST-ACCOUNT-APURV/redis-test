@@ -32,5 +32,6 @@ EOL
 }
 
 resource "humanitec_resource_definition_criteria" "namespace" {
-  resource_definition_id = humanitec_resource_definition.namespace.id
+  count                   = var.humanitec_env_type == "development" ? 1 : 0
+  resource_definition_id  = humanitec_resource_definition.namespace[count.index].id
 }
