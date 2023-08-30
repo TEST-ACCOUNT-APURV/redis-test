@@ -14,12 +14,12 @@ flowchart LR
     subgraph Apps
       direction LR
       subgraph App
-        subgraph Environment
+        subgraph app-env [Environment]
         end
       end
     end
     subgraph Environment Types
-      subgraph Environment
+      subgraph env-type [Environment]
       end
     end
   end
