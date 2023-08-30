@@ -42,6 +42,8 @@ flowchart LR
     end
     subgraph cloud-nat [Cloud NAT]
     end
+    subgraph cloud-logging [Cloud Logging]
+    end
     subgraph Google Service Accounts
       gke_nodes
       gar_writer_access
@@ -51,6 +53,9 @@ flowchart LR
     gke-->gke_nodes
     gke_nodes-->cloud-nat
     gke_nodes-->gar
+    gke_logging_access-->cloud-logging
+    gke-->cloud-logging
+    gar_writer_access-->gar
   end
 ```
 
