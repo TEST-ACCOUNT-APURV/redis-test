@@ -18,6 +18,16 @@ variable "humanitec_env_type" {
   default       = "development"
 }
 
+variable "github_credentials" {
+  description = "The credentials for connecting to GitHub."
+  type = object({
+    organization    = string
+    repository      = string
+    token           = string
+  })
+  sensitive = true
+}
+
 variable "gcp_project_id" {
   description   = "Id of the Google Cloud Project where the services are provisioned."
   type          = string
@@ -33,6 +43,21 @@ variable "gcp_zone" {
   description   = "Zone where the Google Cloud services are provisioned."
   type          = string
   default       = "northamerica-northeast1-a"
+}
+
+variable "gcp_network" {
+  type    = string
+  default = "default"
+}
+
+variable "gcp_sub_network" {
+  type    = string
+  default = "default"
+}
+
+variable "gcp_gke_master_ipv4_cidr_block" {
+  type    = string
+  default = "172.16.0.0/28"
 }
 
 variable "gcp_gke_node_size" {

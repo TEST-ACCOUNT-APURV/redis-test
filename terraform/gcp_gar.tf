@@ -25,6 +25,7 @@ resource "google_artifact_registry_repository_iam_member" "gar_containers_writer
   member      = "serviceAccount:${google_service_account.gar_writer_access.email}"
 }
 
+# https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/google_service_account_key.html
 resource "google_service_account_key" "gar_writer_access_key" {
   service_account_id = google_service_account.gar_writer_access.name
 }

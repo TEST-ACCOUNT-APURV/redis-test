@@ -24,6 +24,8 @@ resource "google_container_cluster" "gke" {
   remove_default_node_pool  = true
   initial_node_count        = 1
   datapath_provider         = "ADVANCED_DATAPATH" # Dataplane V2 (NetworkPolicies) is enabled.
+  network                   = var.gcp_network
+  subnetwork                = var.gcp_sub_network
 
   addons_config {
     dns_cache_config {
@@ -48,11 +50,18 @@ resource "google_container_cluster" "gke" {
       cidr_block = cidr_blocks.key
     }
     }
+    cidr_blocks {
+      cidr_block = "${chomp(data.http.icanhazip.response_body)}/32"
+    }
   }
 
-  # confidential_nodes {
-  #   enabled = true
-  # }
+  node_config {
+    machine_type    = var.gcp_gke_node_size
+  }
+
+  confidential_nodes {
+    enabled = true
+  }
 
   monitoring_config {
     enable_components = ["SYSTEM_COMPONENTS"]
@@ -71,7 +80,8 @@ resource "google_container_cluster" "gke" {
 
   private_cluster_config {
     enable_private_endpoint = false
-    enable_private_nodes    = false
+    enable_private_nodes    = true
+    master_ipv4_cidr_block  = var.gcp_gke_master_ipv4_cidr_block
   }
 
   security_posture_config {

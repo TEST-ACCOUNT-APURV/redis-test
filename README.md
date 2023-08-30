@@ -2,7 +2,13 @@
 
 For each Environment, just change this value:
 ```bash
-ENVIRONMENT_TYPE=development
+HUMANITEC_ENVIRONMENT_TYPE=development
+
+GITHUB_ORG=FIXME
+GITHUB_REPOSITORY=FIXME
+GITHUB_TOKEN=FIXME
+
+GOOGLE_PROJECT_ID=FIXME
 ```
 
 ```bash
@@ -13,13 +19,14 @@ gcloud auth application-default login
 terraform workspace new ${ENVIRONMENT_TYPE}
 terraform workspace select ${ENVIRONMENT_TYPE}
 
-terraform init
+terraform init -upgrade
 
 terraform plan \
     -var humanitec_credentials="{\"organization\"=\"${HUMANITEC_ORG}\", \"token\"=\"${HUMANITEC_TOKEN}\"}" \
     -var humanitec_app_name=${HUMANITEC_APP} \
-    -var gcp_project_id=${PROJECT_ID} \
-    -var humanitec_env_type=${ENVIRONMENT_TYPE} \
+    -var github_credentials="{\"organization\"=\"${GITHUB_ORG}\", \"repository\"=\"${GITHUB_REPOSITORY}\", \"token\"=\"${GITHUB_TOKEN}\"}" \
+    -var gcp_project_id=${GOOGLE_PROJECT_ID} \
+    -var humanitec_env_type=${HUMANITEC_ENVIRONMENT_TYPE} \
     -out tfplan
 
 terraform apply \

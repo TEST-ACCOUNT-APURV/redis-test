@@ -2,11 +2,27 @@ terraform {
   required_providers {
     humanitec = {
       source = "humanitec/humanitec"
-      version = ">= 0.11.0"
+      version = ">= 0.11.1"
     }
     google = {
       source  = "hashicorp/google"
-      version = ">= 4.78.0"
+      version = ">= 4.80.0"
+    }
+    github = {
+      source = "integrations/github"
+      version = ">= 5.34.0"
+    }
+    helm = {
+      source = "hashicorp/helm"
+      version = ">= 2.11.0"
+    }
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = ">= 2.23.0"
+    }
+    http = {
+      source = "hashicorp/http"
+      version = "3.4.0"
     }
   }
 }
@@ -20,4 +36,25 @@ provider "google" {
   project = var.gcp_project_id
 }
 
-data "humanitec_source_ip_ranges" "main" {}
+provider "github" {
+  owner = var.github_credentials.organization
+  token = var.github_credentials.token
+}
+
+provider "helm" {
+  kubernetes {
+    host                    = "https://${google_container_cluster.gke.endpoint}"
+    token                   = data.google_client_config.default.access_token
+    cluster_ca_certificate  = base64decode(
+      google_container_cluster.gke.master_auth.0.cluster_ca_certificate
+    )
+  }
+}
+
+provider "kubernetes" {
+  host                    = "https://${google_container_cluster.gke.endpoint}"
+  token                   = data.google_client_config.default.access_token
+  cluster_ca_certificate  = base64decode(
+    google_container_cluster.gke.master_auth.0.cluster_ca_certificate
+  )
+}

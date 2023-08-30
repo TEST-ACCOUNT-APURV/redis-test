@@ -8,7 +8,7 @@ resource "humanitec_resource_definition" "gke" {
 
   driver_inputs = {
     values = {
-      "loadbalancer" = "0.0.0.0"
+      "loadbalancer" = data.kubernetes_service.ingress_nginx_controller.status.0.load_balancer.0.ingress.0.ip
       "name"         = google_container_cluster.gke.name
       "project_id"   = var.gcp_project_id
       "zone"         = var.gcp_zone
