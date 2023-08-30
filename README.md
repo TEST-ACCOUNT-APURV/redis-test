@@ -35,8 +35,8 @@ In Google Cloud:
 flowchart LR
   subgraph Google Cloud
     subgraph Google Kubernetes Engine
-      subgraph ingress-nginx
-      end
+      ingress-nginx
+    end
     subgraph Google Artifact Registry
       containers
     end
