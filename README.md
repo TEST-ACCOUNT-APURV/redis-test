@@ -46,6 +46,9 @@ flowchart LR
         GCP_GAR_HOST
         GCP_GAR_WRITER_KEY
       end
+      subgraph Variables
+        CLOUD_PROVIDER
+      end
     end
   end
 ```
