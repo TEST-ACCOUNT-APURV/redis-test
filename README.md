@@ -46,17 +46,19 @@ flowchart LR
     end
     subgraph Google Service Accounts
       gke_nodes
-      gar_writer_access
-      gke_logging_access
-      gke_cluster_access
+      github_gar_writer_access
+      humanitec_gke_logging_access
+      humanitec_gke_cluster_access
     end
     gke-->gke_nodes
     gke_nodes-->cloud-nat
     gke_nodes-->gar
-    gke_logging_access-->cloud-logging
+    humanitec_gke_logging_access-->cloud-logging
     gke-->cloud-logging
-    gar_writer_access-->gar
+    github_gar_writer_access-->gar
+    humanitec_gke_cluster_access-->gke
   end
+  public-endpoint-->ingress-nginx
 ```
 
 In GitHub:
