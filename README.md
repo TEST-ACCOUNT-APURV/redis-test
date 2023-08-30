@@ -2,15 +2,54 @@
 
 In Humanitec:
 
-FIXME
+```mermaid
+flowchart LR
+  subgraph Humanitec
+    subgraph Resources
+      namespace>custom-namespace]
+      logging>custom-gcp-logging]
+      in-cluster-mysql>in-cluster-mysql]
+      gke-cluster>gke-cluster]
+    end
+    subgraph Apps
+      direction LR
+      subgraph App
+        subgraph Environment
+        end
+      end
+    end
+    subgraph Environment Types
+      subgraph Environment
+      end
+    end
+  end
+```
 
 In Google Cloud:
 
 FIXME
 
+In GitHub:
+
+```mermaid
+flowchart LR
+  subgraph GitHub
+    subgraph Org
+      subgraph Secrets
+        HUMANITEC_ORG
+        HUMANITEC_TOKEN
+        GCP_GAR_NAME
+        GCP_GAR_HOST
+        GCP_GAR_WRITER_KEY
+      end
+    end
+  end
+```
+
 For each Environment, just change this value:
 ```bash
 HUMANITEC_ENVIRONMENT_TYPE=development
+HUMANITEC_APP=FIXME
 
 GITHUB_ORG=FIXME
 GITHUB_REPOSITORY=FIXME
