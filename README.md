@@ -1,5 +1,38 @@
 # google-cloud-reference-architecture
 
+In Humanitec:
+
+```mermaid
+flowchart LR
+  subgraph Humanitec
+    subgraph Resources
+      gke>cluster-gke]
+      azure-blob>model-repository-azblob-echo]
+      gcs>model-repository-gcs-echo]
+    end
+    subgraph Apps
+      direction LR
+      subgraph Triton
+        subgraph Development
+          triton-dev[triton-inference-server]
+        end
+        subgraph GCP
+          triton-gcp[triton-inference-server]
+        end
+        subgraph Azure
+          triton-azure[triton-inference-server]
+        end
+      end
+      GCP-->gcs
+      GCP-->gke
+    end
+  end
+```
+
+In Google Cloud:
+
+FIXME
+
 For each Environment, just change this value:
 ```bash
 HUMANITEC_ENVIRONMENT_TYPE=development
