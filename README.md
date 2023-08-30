@@ -1,4 +1,8 @@
-# google-cloud-reference-architecture
+# [Beta] Google Cloud Reference Architecture for Humanitec
+
+This is not yet the official Google Reference Architecture for Humanitec. This is currently tested as part of the Humanitec POV on Google Cloud. Feedback are more than welcome!
+
+[![ci](https://github.com/Humanitec-DemoOrg/google-cloud-reference-architecture/actions/workflows/ci.yaml/badge.svg)](https://github.com/Humanitec-DemoOrg/google-cloud-reference-architecture/actions/workflows/ci.yaml)
 
 In Humanitec:
 
