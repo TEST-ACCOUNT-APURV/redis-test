@@ -66,7 +66,7 @@ resource "google_container_cluster" "gke" {
   monitoring_config {
     enable_components = ["SYSTEM_COMPONENTS"]
     managed_prometheus {
-        enabled = true
+        enabled = false
     }
   }
 
