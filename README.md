@@ -31,7 +31,25 @@ flowchart LR
 
 In Google Cloud:
 
-FIXME
+```mermaid
+flowchart LR
+  subgraph Google Cloud
+    subgraph Google Kubernetes Engine
+      subgraph ingress-nginx
+      end
+    subgraph Google Artifact Registry
+      containers
+    end
+    subgraph Cloud NAT
+    end
+    subgraph Google Service Accounts
+      gke_nodes
+      gar_writer_access
+      gke_logging_access
+      gke_cluster_access
+    end
+  end
+```
 
 In GitHub:
 
