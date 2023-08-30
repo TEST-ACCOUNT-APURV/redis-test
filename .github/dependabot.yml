@@ -5,6 +5,6 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "terraform"
-    directory: "/terraform/providers.tf"
+    directory: "/terraform/"
     schedule:
       interval: "daily"
