@@ -57,8 +57,8 @@ flowchart LR
     gke-->cloud-logging
     github_gar_writer_access-->gar
     humanitec_gke_cluster_access-->gke
+    Public IP address-->ingress-nginx
   end
-  public-endpoint-->ingress-nginx
 ```
 
 In GitHub:
