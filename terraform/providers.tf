@@ -2,7 +2,7 @@ terraform {
   required_providers {
     humanitec = {
       source = "humanitec/humanitec"
-      version = "0.11.1"
+      version = "0.12.0"
     }
     google = {
       source  = "hashicorp/google"
