@@ -94,7 +94,7 @@ GOOGLE_PROJECT_ID=FIXME
 ```
 
 ```bash
-cd terraform/environment
+cd terraform
 
 gcloud auth application-default login
 
@@ -102,6 +102,8 @@ terraform workspace new ${ENVIRONMENT_TYPE}
 terraform workspace select ${ENVIRONMENT_TYPE}
 
 terraform init -upgrade
+
+terraform validate
 
 terraform plan \
     -var humanitec_credentials="{\"organization\"=\"${HUMANITEC_ORG}\", \"token\"=\"${HUMANITEC_TOKEN}\"}" \

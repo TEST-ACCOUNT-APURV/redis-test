@@ -9,6 +9,11 @@ resource "helm_release" "ingress_nginx" {
   wait              = true
 
   set {
+    name    = "controller.service.loadBalancerIP"
+    value   = google_compute_address.public_ingress.address
+  } 
+
+  set {
     name    = "controller.containerSecurityContext.runAsUser"
     value   = 101
   }
