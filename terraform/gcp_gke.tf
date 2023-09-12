@@ -1,23 +1,4 @@
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/container_cluster
-
-resource "google_service_account" "gke_nodes" {
-  account_id    = "gke-${var.humanitec_env_type}-nodes-sa"
-  description   = "Account used by the GKE nodes"
-}
-
-resource "google_project_iam_member" "gke_nodes" {
-  for_each = toset([
-    "roles/logging.logWriter",
-    "roles/monitoring.metricWriter",
-    "roles/monitoring.viewer"
-  ])
-
-  project = var.gcp_project_id
-  role    = each.key
-
-  member = "serviceAccount:${google_service_account.gke_nodes.email}"
-}
-
 resource "google_container_cluster" "gke" {
   name                      = "cluster-${var.humanitec_env_type}"
   location                  = var.gcp_zone
@@ -106,22 +87,4 @@ resource "google_container_node_pool" "gke_node_pool" {
       enable_integrity_monitoring = true
     }
   }
-}
-
-resource "google_service_account" "gke_cluster_access" {
-  account_id    = "gke-${var.humanitec_env_type}-cluster-access"
-  description   = "Account used by Humanitec to access Cloud Logging"
-}
-
-resource "google_project_iam_binding" "gke_admin" {
-  project   = var.gcp_project_id
-  role      = "roles/container.admin"
-
-  members   = [
-    "serviceAccount:${google_service_account.gke_cluster_access.email}"
-  ]
-}
-
-resource "google_service_account_key" "gke_cluster_access_key" {
-  service_account_id = google_service_account.gke_cluster_access.name
 }

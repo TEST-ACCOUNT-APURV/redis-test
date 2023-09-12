@@ -26,6 +26,6 @@ resource "humanitec_resource_definition" "gke" {
 }
 
 resource "humanitec_resource_definition_criteria" "gke" {
-  resource_definition_id = humanitec_resource_definition.gke.id
-  env_type               = var.humanitec_env_type
+  resource_definition_id  = humanitec_resource_definition.gke.id
+  env_type                = var.humanitec_env_type
 }

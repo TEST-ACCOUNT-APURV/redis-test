@@ -28,6 +28,12 @@ variable "github_credentials" {
   sensitive = true
 }
 
+variable "github_create_org_secrets" {
+  description   = "Wether GitHub Secrets should be created at the Org level or at the Repo level."
+  type          = bool
+  default       = true
+}
+
 variable "gcp_project_id" {
   description   = "Id of the Google Cloud Project where the services are provisioned."
   type          = string
