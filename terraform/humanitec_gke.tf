@@ -7,15 +7,15 @@ resource "humanitec_resource_definition" "gke" {
   driver_type = "humanitec/k8s-cluster-gke"
 
   driver_inputs = {
-    values = {
+    values_string = jsonencode({
       "loadbalancer" = google_compute_address.public_ingress.address
       "name"         = google_container_cluster.gke.name
       "project_id"   = var.gcp_project_id
       "zone"         = var.gcp_zone
-    }
-    secrets = {
+    })
+    secrets_string = jsonencode({
       "credentials" = base64decode(google_service_account_key.gke_cluster_access_key.private_key)
-    }
+    })
   }
 
   lifecycle {

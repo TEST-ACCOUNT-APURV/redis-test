@@ -7,14 +7,14 @@ resource "humanitec_resource_definition" "gcp_logging" {
   driver_type = "humanitec/logging-gcp"
 
   driver_inputs = {
-    values = {
+    values_string = jsonencode({
       cluster_name = "$${resources.k8s-cluster#k8s-cluster.outputs.name}"
       cluster_zone = "$${resources.k8s-cluster#k8s-cluster.outputs.zone}"
       project_id   = "$${resources.k8s-cluster#k8s-cluster.outputs.project_id}"
-    }
-    secrets = {
+    })
+    secrets_string = jsonencode({
       credentials = base64decode(google_service_account_key.gke_logging_access_key.private_key)
-    }
+    })
   }
 
   lifecycle {
