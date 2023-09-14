@@ -18,14 +18,14 @@ resource "github_actions_organization_secret" "org_container_registry_name" {
   count             = var.humanitec_env_type == "development" && var.github_create_org_secrets ? 1 : 0
   visibility        = "all"
   secret_name       = "GCP_GAR_NAME"
-  plaintext_value   = "${google_artifact_registry_repository.gar_containers.location}-docker.pkg.dev/${var.gcp_project_id}/${google_artifact_registry_repository.gar_containers.name}"
+  plaintext_value   = "${var.gcp_region}-docker.pkg.dev/${var.gcp_project_id}/${local.gar_containers_name}"
 }
 
 resource "github_actions_organization_secret" "org_container_registry_host" {
   count             = var.humanitec_env_type == "development" && var.github_create_org_secrets ? 1 : 0
   visibility        = "all"
   secret_name       = "GCP_GAR_HOST"
-  plaintext_value   = "${google_artifact_registry_repository.gar_containers.location}-docker.pkg.dev"
+  plaintext_value   = "${var.gcp_region}-docker.pkg.dev"
 }
 
 resource "github_actions_organization_secret" "org_container_registry_writer_key" {

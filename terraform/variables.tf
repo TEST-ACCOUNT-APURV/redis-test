@@ -51,19 +51,14 @@ variable "gcp_zone" {
   default       = "northamerica-northeast1-a"
 }
 
-variable "gcp_network" {
-  type    = string
-  default = "default"
-}
-
-variable "gcp_sub_network" {
-  type    = string
-  default = "default"
-}
-
 variable "gcp_gke_release_channel" {
   type    = string
   default = "RAPID"
+}
+
+variable "gcp_gke_autopilot" {
+  type    = bool
+  default = true # true or null (not false)
 }
 
 variable "gcp_gke_master_ipv4_cidr_block" {

@@ -98,8 +98,8 @@ cd terraform
 
 gcloud auth application-default login
 
-terraform workspace new ${ENVIRONMENT_TYPE}
-terraform workspace select ${ENVIRONMENT_TYPE}
+terraform workspace new ${HUMANITEC_ENVIRONMENT_TYPE}
+terraform workspace select ${HUMANITEC_ENVIRONMENT_TYPE}
 
 terraform init -upgrade
 
