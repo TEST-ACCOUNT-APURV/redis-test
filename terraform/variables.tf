@@ -61,6 +61,11 @@ variable "gcp_sub_network" {
   default = "default"
 }
 
+variable "gcp_gke_release_channel" {
+  type    = string
+  default = "RAPID"
+}
+
 variable "gcp_gke_master_ipv4_cidr_block" {
   type    = string
   default = "172.16.0.0/28"

@@ -14,8 +14,13 @@ resource "google_container_cluster" "gke" {
     }
   }
 
+  cluster_autoscaling {
+    enabled = true
+    # autoscaling_profile = "OPTIMIZE_UTILIZATION" -->  in beta for now
+  }
+
   release_channel {
-    channel = "RAPID"
+    channel = var.gcp_gke_release_channel
   }
 
   ip_allocation_policy {
@@ -38,6 +43,17 @@ resource "google_container_cluster" "gke" {
 
   node_config {
     machine_type    = var.gcp_gke_node_size
+    service_account = google_service_account.gke_nodes.email
+    oauth_scopes    = ["https://www.googleapis.com/auth/cloud-platform"]
+    
+    gcfs_config {
+      enabled = true
+    }
+    
+    shielded_instance_config {
+      enable_secure_boot          = true
+      enable_integrity_monitoring = true
+    }
   }
 
   confidential_nodes {
@@ -71,17 +87,21 @@ resource "google_container_cluster" "gke" {
   }
 }
 
+# https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/container_node_pool
 resource "google_container_node_pool" "gke_node_pool" {
   name       = "primary"
   cluster    = google_container_cluster.gke.id
-  node_count = 3
+  
+  autoscaling {
+    min_node_count = 0
+    max_node_count = 4
+  }
 
   node_config {
     machine_type    = var.gcp_gke_node_size
     service_account = google_service_account.gke_nodes.email
-    oauth_scopes    = [
-      "https://www.googleapis.com/auth/cloud-platform"
-    ]
+    oauth_scopes    = ["https://www.googleapis.com/auth/cloud-platform"]
+    
     shielded_instance_config {
       enable_secure_boot          = true
       enable_integrity_monitoring = true
