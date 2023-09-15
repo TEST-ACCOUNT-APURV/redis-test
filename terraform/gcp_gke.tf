@@ -18,11 +18,18 @@ resource "google_container_cluster" "gke" {
     }
   }
 
-  dynamic "cluster_autoscaling" {
-    for_each = var.gcp_gke_autopilot == null ? [1] : []
-    content {
-      enabled = true
-      # autoscaling_profile = "OPTIMIZE_UTILIZATION" -->  in beta for now
+  cluster_autoscaling {
+    enabled         = var.gcp_gke_autopilot == null ? true : null
+    # autoscaling_profile = "OPTIMIZE_UTILIZATION" -->  in beta for now
+    
+    auto_provisioning_defaults {
+      service_account = google_service_account.gke_nodes.email
+      oauth_scopes    = ["https://www.googleapis.com/auth/cloud-platform"]
+
+      #shielded_instance_config {
+      #  enable_secure_boot          = true
+      #  enable_integrity_monitoring = true
+      #}
     }
   }
 
