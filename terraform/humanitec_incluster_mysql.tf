@@ -1,6 +1,6 @@
 # https://registry.terraform.io/providers/humanitec/humanitec/latest/docs/resources/resource_definition
 resource "humanitec_resource_definition" "in-cluster-mysql" {
-  count       = var.humanitec_env_type == "development" ? 1 : 0
+  count       = var.humanitec_env_type == "development" && var.enable_mysql ? 1 : 0
   id          = "in-cluster-mysql"
   name        = "in-cluster-mysql"
   type        = "mysql"
@@ -117,6 +117,6 @@ EOL
 }
 
 resource "humanitec_resource_definition_criteria" "in-cluster-mysql" {
-  count                   = var.humanitec_env_type == "development" ? 1 : 0
+  count                   = var.humanitec_env_type == "development" && var.enable_mysql ? 1 : 0
   resource_definition_id  = humanitec_resource_definition.in-cluster-mysql[count.index].id
 }

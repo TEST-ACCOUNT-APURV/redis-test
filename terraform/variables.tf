@@ -29,9 +29,15 @@ variable "github_credentials" {
 }
 
 variable "github_create_org_secrets" {
-  description   = "Wether GitHub Secrets should be created at the Org level or at the Repo level."
+  description   = "Wether GitHub Secrets should be created at the Org level."
   type          = bool
   default       = true
+}
+
+variable "github_create_repo_secrets" {
+  description   = "Wether GitHub Secrets should be created at the Repo level."
+  type          = bool
+  default       = false
 }
 
 variable "gcp_project_id" {
@@ -70,4 +76,14 @@ variable "gcp_gke_node_size" {
   description   = "Size of the GKE nodes."
   type          = string
   default       = "n2d-standard-4"
+}
+
+variable "enable_mysql" {
+  type    = bool
+  default = true
+}
+
+variable "enable_redis" {
+  type    = bool
+  default = true
 }
