@@ -13,7 +13,7 @@ resource "helm_release" "ingress_nginx" {
 
   set {
     name    = "controller.service.loadBalancerIP"
-    value   = google_compute_address.public_ingress.address
+    value   = google_compute_global_address.public_ingress.address
   } 
 
   set {
