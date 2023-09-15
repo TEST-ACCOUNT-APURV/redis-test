@@ -18,14 +18,14 @@ resource "google_project_iam_member" "gke_nodes" {
 
 resource "google_service_account" "gke_cluster_access" {
   account_id    = "gke-${var.humanitec_env_type}-cluster-access"
-  description   = "Account used by Humanitec to access Cloud Logging"
+  description   = "Account used by Humanitec to access the GKE cluster"
 }
 
 resource "google_project_iam_binding" "gke_admin" {
   project   = var.gcp_project_id
   role      = "roles/container.admin"
 
-  members   = [
+  members = [
     "serviceAccount:${google_service_account.gke_cluster_access.email}"
   ]
 }
@@ -43,7 +43,7 @@ resource "google_project_iam_binding" "gke_logging_viewer" {
   project   = var.gcp_project_id
   role      = "roles/logging.viewer"
 
-  members   = [
+  members = [
     "serviceAccount:${google_service_account.gke_logging_access.email}"
   ]
 }
