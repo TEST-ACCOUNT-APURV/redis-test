@@ -1,3 +1,8 @@
+locals {
+  services_range_name = "services"
+  pods_range_name = "pods"
+}
+
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_network
 resource "google_compute_network" "vpc" {
   name                    = var.humanitec_env_type
@@ -13,11 +18,11 @@ resource "google_compute_subnetwork" "subnetwork" {
   region                    = var.gcp_region
 
   secondary_ip_range {
-    range_name    = "servicesrange"
+    range_name    = local.services_range_name
     ip_cidr_range = "10.3.0.0/20"
   }
   secondary_ip_range {
-    range_name    = "clusterrange"
+    range_name    = local.pods_range_name
     ip_cidr_range = "10.4.0.0/20"
   }
 }

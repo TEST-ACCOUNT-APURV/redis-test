@@ -116,3 +116,5 @@ terraform plan \
 terraform apply \
     tfplan
 ```
+
+_Note: here is you have updates on the GKE cluster which need to recreat the cluster you will have an error about the `helm_release` not able to reach the Kubernetes API server. For this, [as per here](https://github.com/hashicorp/terraform-provider-kubernetes/blob/main/_examples/gke/README.md#replacing-the-gke-cluster-and-re-creating-the-kubernetes--helm-resources), you will need to run `terraform state rm helm_release.ingress_nginx` before your `terraform plan`._

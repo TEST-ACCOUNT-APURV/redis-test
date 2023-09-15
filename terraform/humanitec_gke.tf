@@ -14,7 +14,7 @@ resource "humanitec_resource_definition" "gke" {
       "zone"         = var.gcp_zone
     })
     secrets_string = jsonencode({
-      "credentials" = base64decode(google_service_account_key.gke_cluster_access_key.private_key)
+      "credentials" = jsondecode(base64decode(google_service_account_key.gke_cluster_access_key.private_key))
     })
   }
 

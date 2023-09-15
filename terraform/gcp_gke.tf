@@ -5,8 +5,8 @@ resource "google_container_cluster" "gke" {
   remove_default_node_pool  = var.gcp_gke_autopilot != null ? null : true
   initial_node_count        = var.gcp_gke_autopilot != null ? null : 1
   datapath_provider         = "ADVANCED_DATAPATH" # Dataplane V2 (NetworkPolicies) is enabled.
-  network                   = google_compute_network.vpc.name
-  subnetwork                = google_compute_subnetwork.subnetwork.name
+  network                   = google_compute_network.vpc.id
+  subnetwork                = google_compute_subnetwork.subnetwork.id
   enable_autopilot          = var.gcp_gke_autopilot
 
   dynamic "addons_config" {
@@ -32,6 +32,8 @@ resource "google_container_cluster" "gke" {
 
   ip_allocation_policy {
     # Adding this block enables IP aliasing, making the cluster VPC-native instead of routes-based.
+    cluster_secondary_range_name  = local.pods_range_name
+    services_secondary_range_name = local.services_range_name
   }
 
   master_authorized_networks_config {
@@ -97,6 +99,12 @@ resource "google_container_cluster" "gke" {
   security_posture_config {
     mode = "BASIC"
     vulnerability_mode = "VULNERABILITY_BASIC"
+  }
+
+  lifecycle {
+    ignore_changes = [
+      node_config # otherwise destroy/recreate with Autopilot...
+    ]
   }
 }
 

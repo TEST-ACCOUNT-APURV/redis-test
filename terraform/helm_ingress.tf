@@ -1,3 +1,6 @@
+# Current issue with Autopilot: https://github.com/kubernetes/ingress-nginx/issues/10326
+# But after ~4min the Deployment will be successfully created, so not a blocker.
+
 resource "helm_release" "ingress_nginx" {
   name              = "ingress-nginx"
   namespace         = "ingress-nginx"
