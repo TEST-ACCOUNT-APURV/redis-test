@@ -8,7 +8,7 @@ resource "humanitec_resource_definition" "gke" {
 
   driver_inputs = {
     values_string = jsonencode({
-      "loadbalancer" = google_compute_global_address.public_ingress.address
+      "loadbalancer" = google_compute_address.public_ingress.address
       "name"         = google_container_cluster.gke.name
       "project_id"   = var.gcp_project_id
       "zone"         = google_container_cluster.gke.location

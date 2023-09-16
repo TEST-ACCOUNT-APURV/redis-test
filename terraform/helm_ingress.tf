@@ -6,14 +6,14 @@ resource "helm_release" "ingress_nginx" {
   namespace         = "ingress-nginx"
   create_namespace  = true
   repository        = "https://kubernetes.github.io/ingress-nginx"
-
   chart             = "ingress-nginx"
   version           = "4.7.2"
   wait              = true
+  timeout           = 300
 
   set {
     name    = "controller.service.loadBalancerIP"
-    value   = google_compute_global_address.public_ingress.address
+    value   = google_compute_address.public_ingress.address
   } 
 
   set {
