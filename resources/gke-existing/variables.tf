@@ -1,6 +1,7 @@
 variable "credentials" {
   description = "The credentials for connecting to Google Cloud."
-  sensitive = true
+  type        = string
+  sensitive   = true
 }
 
 variable "project_id" {
