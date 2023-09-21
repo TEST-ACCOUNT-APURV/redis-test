@@ -18,7 +18,7 @@ object:
       variables:
         project_id: ${PROJECT_ID}
         gke_name: ${GKE_NAME}
-        gke_location: ${GKE_NAME}
+        gke_location: ${GKE_LOCATION}
         ip_address_name: ${IP_ADDRESS_NAME}
         ip_address_region: ${IP_ADDRESS_REGION}
     secrets:
