@@ -8,5 +8,5 @@ terraform {
 
 provider "google" {
   project     = var.project_id
-  credentials = var.credentials
+  credentials = "${var.credentials}"
 }
