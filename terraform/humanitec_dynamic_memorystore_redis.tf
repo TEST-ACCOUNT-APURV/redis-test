@@ -1,7 +1,6 @@
 # https://registry.terraform.io/providers/humanitec/humanitec/latest/docs/resources/resource_definition
 
 resource "humanitec_resource_definition" "gcp_dynamic_memorystore_redis" {
-  count      = var.humanitec_env_type == "development" && var.enable_redis ? 1 : 0
   count       = var.enable_redis ? 1 : 0
   id          = "dynamic-memorystore"
   name        = "dynamic-memorystore"
