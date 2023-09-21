@@ -7,7 +7,7 @@ output "project_id" {
 }
 
 output "name" {
-  value = var.gke_cluster_name
+  value = var.gke_name
 }
 
 output "cluster_type" {
@@ -15,7 +15,7 @@ output "cluster_type" {
 }
 
 output "zone" {
-  value = var.gke_cluster_location
+  value = var.gke_location
 }
 
 output "credentials" {

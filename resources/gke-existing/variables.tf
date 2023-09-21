@@ -1,8 +1,5 @@
 variable "credentials" {
   description = "The credentials for connecting to Google Cloud."
-  type = object({
-    credentials = string
-  })
   sensitive = true
 }
 
@@ -11,22 +8,22 @@ variable "project_id" {
   type        = string
 }
 
-variable "gke_cluster_name" {
+variable "gke_name" {
   description = "Name of the GKE cluster"
   type        = string
 }
 
-variable "gke_cluster_location" {
+variable "gke_location" {
   description = "Location of the GKE cluster"
   type        = string
 }
 
 variable "ip_address_name" {
-  description = "Name of the puublic IP address"
+  description = "Name of the public IP address"
   type        = string
 }
 
 variable "ip_address_region" {
-  description = "Region of the puublic IP address"
+  description = "Region of the public IP address"
   type        = string
 }

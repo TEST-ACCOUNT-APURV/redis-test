@@ -1,35 +1,33 @@
 ```bash
-cat <<EOF > aks-cluster-existing.yaml
+cat <<EOF > gke-cluster-existing.yaml
 apiVersion: core.api.humanitec.io/v1
 kind: Definition
 metadata:
-  id: aks-cluster-existing
+  id: gke-cluster-existing
 object:
-  name: aks-cluster-existing
+  name: gke-cluster-existing
   type: k8s-cluster
   driver_type: ${HUMANITEC_ORG}/terraform
   driver_inputs:
     values:
       append_logs_to_error: true
       source:
-        path: resources/terraform/azure-aks-existing
+        path: resources/terraform/gke-existing
         rev: refs/heads/main
-        url: https://github.com/Humanitec-DemoOrg/azure-reference-architecture.git
+        url: https://github.com/Humanitec-DemoOrg/google-cloud-reference-architecture.git
       variables:
-        aks_cluster_name: ${AZURE_AKS_CLUSTER_NAME}
-        resource_group_name: ${AZURE_RESOURCE_GROUP}
-        ingress_nginx_public_ip_address: ${AZURE_AKS_CLUSTER_NAME}-ingress-nginx
+        project_id: ${PROJECT_ID}
+        gke_name: ${GKE_NAME}
+        gke_location: ${GKE_NAME}
+        ip_address_name: ${IP_ADDRESS_NAME}
+        ip_address_region: ${IP_ADDRESS_REGION}
     secrets:
       variables:
-        credentials:
-          azure_subscription_id: ${AZURE_SUBSCRIPTION_ID}
-          azure_subscription_tenant_id: ${AZURE_SUBSCRIPTION_TENANT_ID}
-          service_principal_id: ${TERRAFORM_CONTRIBUTOR_SP_ID}
-          service_principal_password: ${TERRAFORM_CONTRIBUTOR_SP_PASSWORD}
+        credentials: ${GCP_CREDENTIALS}
   criteria:
-    - env_id: ${AZURE_ENVIRONMENT}
+    - env_id: ${GCP_ENVIRONMENT}
       app_id: triton
 EOF
 humctl create \
-    -f aks-cluster-existing.yaml
+    -f gke-cluster-existing.yaml
 ```

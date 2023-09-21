@@ -1,6 +1,6 @@
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/google_project_iam
 resource "google_service_account" "gke_cluster_access" {
-  account_id    = "humanitec-to-${var.gke_cluster_name}"
+  account_id    = "humanitec-to-${var.gke_name}"
   description   = "Account used by Humanitec to access the GKE cluster"
 }
 
