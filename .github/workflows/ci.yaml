@@ -14,3 +14,8 @@ jobs:
           cd terraform
           terraform init -backend=false
           terraform validate
+      - name: terraform validate - gke-existing
+        run: |
+          cd resources/gke-existing
+          terraform init -backend=false
+          terraform validate
