@@ -13,7 +13,7 @@ resource "humanitec_resource_definition" "gcp_logging" {
       project_id   = "$${resources.k8s-cluster#k8s-cluster.outputs.project_id}"
     })
     secrets_string = jsonencode({
-      credentials = jsondecode(base64decode(google_service_account_key.gke_logging_access_key.private_key))
+      credentials = "$${resources.k8s-cluster#k8s-cluster.outputs.credentials}"
     })
   }
 

@@ -1,6 +1,6 @@
 # https://registry.terraform.io/providers/humanitec/humanitec/latest/docs/resources/resource_definition
 resource "humanitec_resource_definition" "in-cluster-redis" {
-  count      = var.humanitec_env_type == "development" && var.enable_redis ? 1 : 0
+  #count      = var.humanitec_env_type == "development" && var.enable_redis ? 1 : 0
   id          = "in-cluster-redis"
   name        = "in-cluster-redis"
   type        = "redis"
@@ -87,6 +87,6 @@ EOL
 }
 
 resource "humanitec_resource_definition_criteria" "in-cluster-redis" {
-  count                  = var.humanitec_env_type == "development" && var.enable_redis ? 1 : 0
+  #count                  = var.humanitec_env_type == "development" && var.enable_redis ? 1 : 0
   resource_definition_id  = humanitec_resource_definition.in-cluster-redis[count.index].id
 }

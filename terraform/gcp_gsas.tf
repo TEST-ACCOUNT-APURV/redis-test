@@ -28,24 +28,14 @@ resource "google_project_iam_member" "gke_admin" {
   member  = "serviceAccount:${google_service_account.gke_cluster_access.email}"
 }
 
-resource "google_service_account_key" "gke_cluster_access_key" {
-  service_account_id = google_service_account.gke_cluster_access.name
-}
-
-resource "google_service_account" "gke_logging_access" {
-  account_id    = "gke-logging-${var.humanitec_env_type}-access"
-  description   = "Account used by Humanitec to access Cloud Logging"
-}
-
 resource "google_project_iam_member" "gke_logging_viewer" {
   project   = var.gcp_project_id
   role      = "roles/logging.viewer"
-  member    = "serviceAccount:${google_service_account.gke_logging_access.email}"
+  member    = "serviceAccount:${google_service_account.gke_cluster_access.email}"
 }
 
-# https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/google_service_account_key.html
-resource "google_service_account_key" "gke_logging_access_key" {
-  service_account_id = google_service_account.gke_logging_access.name
+resource "google_service_account_key" "gke_cluster_access_key" {
+  service_account_id = google_service_account.gke_cluster_access.name
 }
 
 resource "google_service_account" "gar_writer_access" {
