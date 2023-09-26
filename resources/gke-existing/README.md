@@ -48,8 +48,7 @@ object:
         ip_address_region: ${IP_ADDRESS_REGION}
     secrets:
       variables:
-        credentials:
-          $(yq -o yaml ${SA_NAME}.json)
+        credentials: $(cat ${SA_NAME}.json | jq -r tostring)
   criteria:
     - env_id: ${ENVIRONMENT}
 EOF
