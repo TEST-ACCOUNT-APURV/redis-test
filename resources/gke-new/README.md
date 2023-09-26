@@ -1,5 +1,5 @@
 ```bash
-cd resources/gke-existing
+cd resources/gke-new
 ```
 
 ## Create the GSA to provision the Terraform resources
@@ -15,50 +15,60 @@ gcloud projects add-iam-policy-binding ${PROJECT_ID} \
 gcloud projects add-iam-policy-binding ${PROJECT_ID} \
     --member "serviceAccount:${SA_ID}" \
     --role "roles/resourcemanager.projectIamAdmin"
+gcloud projects add-iam-policy-binding ${PROJECT_ID} \
+    --member "serviceAccount:${SA_ID}" \
+    --role "roles/artifactregistry.admin"
 gcloud iam service-accounts keys create ${SA_NAME}.json \
     --iam-account ${SA_ID}
+```
+
+## Run Terraform locally
+
+```bash
+terraform init -upgrade
+
+terraform validate
+
+terraform plan \
+    -var credentials="$(cat ${SA_NAME}.json | jq tostring)" \
+    -var project_id=${PROJECT_ID} \
+    -var region=${REGION} \
+    -var existing_gar_repo_name=${GAR_NAME} \
+    -out tfplan
+
+terraform apply \
+    tfplan
 ```
 
 ## Create the associated resource definition in Humanitec
 
 ```bash
-HUMANITEC_ORG=FIXME
-HUMANITEC_ENVIRONMENT=FIXME
+ENVIRONMENT=FIXME
 
-GKE_NAME=FIXME
-GKE_LOCATION=FIXME
-IP_ADDRESS_NAME=FIXME
-IP_ADDRESS_REGION=FIXME
-```
-
-```bash
-cat <<EOF > gke-cluster-existing.yaml
+cat <<EOF > gke-cluster-new.yaml
 apiVersion: core.api.humanitec.io/v1
 kind: Definition
 metadata:
-  id: gke-cluster-existing
+  id: gke-cluster-new
 object:
-  name: gke-cluster-existing
+  name: gke-cluster-new
   type: k8s-cluster
   driver_type: ${HUMANITEC_ORG}/terraform
   driver_inputs:
     values:
       append_logs_to_error: true
       source:
-        path: resources/gke-existing
+        path: resources/gke-new
         rev: refs/heads/main
         url: https://github.com/Humanitec-DemoOrg/google-cloud-reference-architecture.git
       variables:
         project_id: ${PROJECT_ID}
-        gke_name: ${GKE_NAME}
-        gke_location: ${GKE_LOCATION}
-        ip_address_name: ${IP_ADDRESS_NAME}
-        ip_address_region: ${IP_ADDRESS_REGION}
+        region: ${REGION}
+        existing_gar_repo_name: ${GAR_NAME}
     secrets:
       variables:
         credentials: $(cat ${SA_NAME}.json | jq -r tostring)
-  criteria:
-    - env_id: ${HUMANITEC_ENVIRONMENT}
+    - env_id: ${ENVIRONMENT}
 EOF
 ```
 
