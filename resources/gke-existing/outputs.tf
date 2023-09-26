@@ -19,6 +19,6 @@ output "zone" {
 }
 
 output "credentials" {
-  value = base64decode(google_service_account_key.gke_cluster_access_key.private_key)
+  value = jsonencode(base64decode(google_service_account_key.gke_cluster_access_key.private_key))
   sensitive = true
 }
