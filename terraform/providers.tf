@@ -2,26 +2,20 @@ terraform {
   required_providers {
     humanitec = {
       source = "humanitec/humanitec"
-      version = "0.13.0"
     }
     google = {
       source  = "hashicorp/google"
-      version = "4.83.0"
     }
     github = {
       source = "integrations/github"
-      version = "5.37.0"
     }
     helm = {
       source = "hashicorp/helm"
-      version = "2.11.0"
     }
     http = {
       source = "hashicorp/http"
-      version = "3.4.0"
     }
   }
-  required_version = ">= 1.3.0"
 }
 
 provider "humanitec" {
