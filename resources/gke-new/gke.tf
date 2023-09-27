@@ -17,6 +17,13 @@ resource "google_container_cluster" "gke" {
     channel = var.release_channel
   }
 
+  cluster_autoscaling {
+    auto_provisioning_defaults {
+      service_account = google_service_account.gke_nodes.email
+      oauth_scopes    = ["https://www.googleapis.com/auth/cloud-platform"]
+    }
+  }
+
   ip_allocation_policy {
     # Adding this block enables IP aliasing, making the cluster VPC-native instead of routes-based.
     cluster_secondary_range_name  = local.pods_range_name
