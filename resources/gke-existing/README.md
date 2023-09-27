@@ -25,6 +25,26 @@ gcloud iam service-accounts keys create ${SA_NAME}.json \
     --iam-account ${SA_ID}
 ```
 
+## Run Terraform locally
+
+```bash
+terraform init -upgrade
+
+terraform validate
+
+terraform plan \
+    -var credentials="$(cat ${SA_NAME}.json | jq -r tostring)" \
+    -var project_id=${PROJECT_ID} \
+    -var gke_name=${GKE_NAME} \
+    -var gke_location=${GKE_LOCATION} \
+    -var ip_address_name=${IP_ADDRESS_NAME} \
+    -var ip_address_region=${IP_ADDRESS_REGION} \
+    -out tfplan
+
+terraform apply \
+    tfplan
+```
+
 ## Create the associated resource definition in Humanitec
 
 ```bash

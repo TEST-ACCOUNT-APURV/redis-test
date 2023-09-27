@@ -28,7 +28,7 @@ terraform init -upgrade
 terraform validate
 
 terraform plan \
-    -var credentials="$(cat ${SA_NAME}.json | jq tostring)" \
+    -var credentials="$(cat ${SA_NAME}.json | jq -r tostring)" \
     -var project_id=${PROJECT_ID} \
     -var region=${REGION} \
     -var existing_gar_repo_name=${GAR_NAME} \
