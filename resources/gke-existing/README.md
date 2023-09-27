@@ -1,11 +1,17 @@
 ```bash
 cd resources/gke-existing
+
+PROJECT_ID=FIXME
+GKE_NAME=FIXME
+GKE_LOCATION=FIXME
+IP_ADDRESS_NAME=FIXME
+IP_ADDRESS_REGION=FIXME
 ```
 
 ## Create the GSA to provision the Terraform resources
 
 ```bash
-SA_NAME=humanitec-to-${CLUSTER_NAME}
+SA_NAME=humanitec-terraform
 SA_ID=${SA_NAME}@${PROJECT_ID}.iam.gserviceaccount.com
 gcloud iam service-accounts create ${SA_NAME} \
     --display-name=${SA_NAME}
@@ -24,11 +30,6 @@ gcloud iam service-accounts keys create ${SA_NAME}.json \
 ```bash
 HUMANITEC_ORG=FIXME
 HUMANITEC_ENVIRONMENT=FIXME
-
-GKE_NAME=FIXME
-GKE_LOCATION=FIXME
-IP_ADDRESS_NAME=FIXME
-IP_ADDRESS_REGION=FIXME
 ```
 
 ```bash

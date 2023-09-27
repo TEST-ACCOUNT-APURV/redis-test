@@ -1,11 +1,15 @@
 ```bash
 cd resources/gke-new
+
+PROJECT_ID=FIXME
+REGION=FIXME
+GAR_NAME=FIXME
 ```
 
 ## Create the GSA to provision the Terraform resources
 
 ```bash
-SA_NAME=humanitec-to-${CLUSTER_NAME}
+SA_NAME=humanitec-terraform
 SA_ID=${SA_NAME}@${PROJECT_ID}.iam.gserviceaccount.com
 gcloud iam service-accounts create ${SA_NAME} \
     --display-name=${SA_NAME}
@@ -37,8 +41,11 @@ terraform apply \
 ## Create the associated resource definition in Humanitec
 
 ```bash
-ENVIRONMENT=FIXME
+HUMANITEC_ORG=FIXME
+HUMANITEC_ENVIRONMENT=FIXME
+```
 
+```bash
 cat <<EOF > gke-cluster-new.yaml
 apiVersion: core.api.humanitec.io/v1
 kind: Definition
