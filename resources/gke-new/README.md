@@ -62,11 +62,12 @@ object:
     secrets:
       variables:
         credentials: $(cat ${SA_NAME}.json | jq -r tostring)
+  criteria:
     - env_id: ${ENVIRONMENT}
 EOF
 ```
 
 ```bash
 humctl create \
-    -f gke-cluster-existing.yaml
+    -f gke-cluster-new.yaml
 ```

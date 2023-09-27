@@ -1,3 +1,7 @@
+locals {
+  gke_name = "gke-${random_string.gke_name.result}"
+}
+
 resource "random_string" "gke_name" {
   length  = 10
   special = false
@@ -7,7 +11,7 @@ resource "random_string" "gke_name" {
 
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/container_cluster
 resource "google_container_cluster" "gke" {
-  name              = random_string.gke_name.result
+  name              = local.gke_name
   location          = var.region
   enable_autopilot  = true
   network           = google_compute_network.vpc.id

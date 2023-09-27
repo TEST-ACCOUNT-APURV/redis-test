@@ -5,7 +5,7 @@ locals {
 
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_network
 resource "google_compute_network" "vpc" {
-  name                    = random_string.gke_name.result
+  name                    = local.gke_name
   auto_create_subnetworks = false
   routing_mode            = "REGIONAL"
 }
@@ -13,7 +13,7 @@ resource "google_compute_network" "vpc" {
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_subnetwork
 resource "google_compute_subnetwork" "subnetwork" {
   network                   = google_compute_network.vpc.id
-  name                      = random_string.gke_name.result
+  name                      = local.gke_name
   ip_cidr_range             = "10.2.0.0/20"
   region                    = var.region
 

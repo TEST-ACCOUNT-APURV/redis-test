@@ -7,7 +7,7 @@ output "project_id" {
 }
 
 output "name" {
-  value = random_string.gke_name.result
+  value = google_container_cluster.gke.name
 }
 
 output "cluster_type" {
