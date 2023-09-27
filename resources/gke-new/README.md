@@ -11,13 +11,7 @@ gcloud iam service-accounts create ${SA_NAME} \
     --display-name=${SA_NAME}
 gcloud projects add-iam-policy-binding ${PROJECT_ID} \
     --member "serviceAccount:${SA_ID}" \
-    --role "roles/editor"
-gcloud projects add-iam-policy-binding ${PROJECT_ID} \
-    --member "serviceAccount:${SA_ID}" \
-    --role "roles/resourcemanager.projectIamAdmin"
-gcloud projects add-iam-policy-binding ${PROJECT_ID} \
-    --member "serviceAccount:${SA_ID}" \
-    --role "roles/artifactregistry.admin"
+    --role "roles/owner"
 gcloud iam service-accounts keys create ${SA_NAME}.json \
     --iam-account ${SA_ID}
 ```
