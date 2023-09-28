@@ -8,7 +8,8 @@ resource "google_project_service" "apis" {
     "artifactregistry.googleapis.com",
     "containerscanning.googleapis.com",
     "redis.googleapis.com",
-    "containerfilesystem.googleapis.com"
+    "containerfilesystem.googleapis.com",
+    "containeranalysis.googleapis.com"
    ])
 
   service = each.key
