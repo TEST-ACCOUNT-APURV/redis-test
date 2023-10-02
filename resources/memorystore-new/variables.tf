@@ -4,6 +4,11 @@ variable "credentials" {
   sensitive   = true
 }
 
+variable "project_id" {
+  description = "ID of the Google Cloud Project"
+  type        = string
+}
+
 variable "region" {
   description = "The Memorystore (Redis) region"
   type        = string
