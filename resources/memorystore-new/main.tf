@@ -9,7 +9,7 @@ resource "random_string" "memorystore_instance_name" {
 resource "google_redis_instance" "memorystore" {
   name                = "redis-${random_string.memorystore_instance_name.result}"
   memory_size_gb      = 1
-  redis_version       = "REDIS_6_X"
+  redis_version       = "REDIS_7_0"
   region              = var.region
   auth_enabled        = true
   authorized_network  = data.google_compute_network.vpc.id
