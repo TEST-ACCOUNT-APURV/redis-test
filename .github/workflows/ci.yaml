@@ -24,3 +24,8 @@ jobs:
           cd resources/gke-new
           terraform init -backend=false
           terraform validate
+      - name: terraform validate - memorystore-new
+        run: |
+          cd resources/memorystore-new
+          terraform init -backend=false
+          terraform validate
