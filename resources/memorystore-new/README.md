@@ -53,7 +53,7 @@ metadata:
   id: memorystore-new
 object:
   name: memorystore-new
-  type: k8s-cluster
+  type: redis
   driver_type: ${HUMANITEC_ORG}/terraform
   driver_inputs:
     values:
