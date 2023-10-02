@@ -1,3 +1,9 @@
+variable "credentials" {
+  description = "The credentials for connecting to Google Cloud."
+  type        = map(any)
+  sensitive   = true
+}
+
 variable "region" {
   description = "The Memorystore (Redis) region"
   type        = string
