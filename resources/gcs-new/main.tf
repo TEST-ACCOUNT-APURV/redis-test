@@ -8,6 +8,6 @@ resource "random_string" "bucket_name" {
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket
 resource "google_storage_bucket" "bucket" {
   name          = random_string.bucket_name.result
-  location      = "USA"
+  location      = var.region
   force_destroy = true
 }
