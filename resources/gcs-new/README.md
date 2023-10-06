@@ -44,7 +44,7 @@ HUMANITEC_ENVIRONMENT=FIXME
 ```
 
 ```bash
-cat <<EOF > memorystore-new.yaml
+cat <<EOF > gcs-new.yaml
 apiVersion: core.api.humanitec.io/v1
 kind: Definition
 metadata:
