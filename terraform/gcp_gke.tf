@@ -10,7 +10,7 @@ resource "google_container_cluster" "gke" {
   enable_autopilot          = var.gcp_gke_autopilot
 
   dynamic "addons_config" {
-    for_each = !var.gcp_gke_autopilot ? [1] : []
+    for_each = var.gcp_gke_autopilot ? [] : [1]
     content {
       dns_cache_config {
         enabled = true
@@ -19,16 +19,16 @@ resource "google_container_cluster" "gke" {
   }
 
   cluster_autoscaling {
-    enabled         = !var.gcp_gke_autopilot ? true : null
+    enabled         = var.gcp_gke_autopilot ? null : true
     
     auto_provisioning_defaults {
       service_account = google_service_account.gke_nodes.email
       oauth_scopes    = ["https://www.googleapis.com/auth/cloud-platform"]
 
-      #shielded_instance_config {
-      #  enable_secure_boot          = true
-      #  enable_integrity_monitoring = true
-      #}
+      shielded_instance_config {
+        enable_secure_boot          = true
+        enable_integrity_monitoring = true
+      }
     }
   }
 
@@ -72,7 +72,7 @@ resource "google_container_cluster" "gke" {
   }
 
   dynamic "confidential_nodes" {
-    for_each = !var.gcp_gke_autopilot ? [1] : []
+    for_each = var.gcp_gke_autopilot ? [] : [1]
     content {
       enabled = true
     }
@@ -90,7 +90,7 @@ resource "google_container_cluster" "gke" {
   }
 
   dynamic "workload_identity_config" {
-    for_each = !var.gcp_gke_autopilot ? [1] : []
+    for_each = var.gcp_gke_autopilot ? [] : [1]
     content {
       workload_pool = "${var.gcp_project_id}.svc.id.goog"
     }
