@@ -1,16 +1,16 @@
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/container_cluster
 resource "google_container_cluster" "gke" {
   name                      = "cluster-${var.humanitec_env_type}"
-  location                  = var.gcp_gke_autopilot != null ? var.gcp_region : var.gcp_zone
-  remove_default_node_pool  = var.gcp_gke_autopilot != null ? null : true
-  initial_node_count        = var.gcp_gke_autopilot != null ? null : 1
+  location                  = var.gcp_gke_autopilot ? var.gcp_region : var.gcp_zone
+  remove_default_node_pool  = var.gcp_gke_autopilot ? null : true
+  initial_node_count        = var.gcp_gke_autopilot ? null : 1
   datapath_provider         = "ADVANCED_DATAPATH" # Dataplane V2 (NetworkPolicies) is enabled.
   network                   = google_compute_network.vpc.id
   subnetwork                = google_compute_subnetwork.subnetwork.id
   enable_autopilot          = var.gcp_gke_autopilot
 
   dynamic "addons_config" {
-    for_each = var.gcp_gke_autopilot == null ? [1] : []
+    for_each = !var.gcp_gke_autopilot ? [1] : []
     content {
       dns_cache_config {
         enabled = true
@@ -19,8 +19,7 @@ resource "google_container_cluster" "gke" {
   }
 
   cluster_autoscaling {
-    enabled         = var.gcp_gke_autopilot == null ? true : null
-    # autoscaling_profile = "OPTIMIZE_UTILIZATION" -->  in beta for now
+    enabled         = !var.gcp_gke_autopilot ? true : null
     
     auto_provisioning_defaults {
       service_account = google_service_account.gke_nodes.email
@@ -73,7 +72,7 @@ resource "google_container_cluster" "gke" {
   }
 
   dynamic "confidential_nodes" {
-    for_each = var.gcp_gke_autopilot == null ? [1] : []
+    for_each = !var.gcp_gke_autopilot ? [1] : []
     content {
       enabled = true
     }
@@ -82,7 +81,7 @@ resource "google_container_cluster" "gke" {
   monitoring_config {
     enable_components = ["SYSTEM_COMPONENTS"]
     managed_prometheus {
-        enabled = var.gcp_gke_autopilot != null ? true : false
+        enabled = var.gcp_gke_autopilot ? true : false
     }
   }
 
@@ -91,7 +90,7 @@ resource "google_container_cluster" "gke" {
   }
 
   dynamic "workload_identity_config" {
-    for_each = var.gcp_gke_autopilot == null ? [1] : []
+    for_each = !var.gcp_gke_autopilot ? [1] : []
     content {
       workload_pool = "${var.gcp_project_id}.svc.id.goog"
     }
@@ -117,7 +116,7 @@ resource "google_container_cluster" "gke" {
 
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/container_node_pool
 resource "google_container_node_pool" "gke_node_pool" {
-  count       = var.gcp_gke_autopilot != null ? 0 : 1
+  count       = var.gcp_gke_autopilot ? 0 : 1
   name        = "primary"
   cluster     = google_container_cluster.gke.id
   

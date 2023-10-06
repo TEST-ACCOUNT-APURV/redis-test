@@ -64,7 +64,7 @@ variable "gcp_gke_release_channel" {
 
 variable "gcp_gke_autopilot" {
   type    = bool
-  default = true # true or null (not false)
+  default = true
 }
 
 variable "gcp_gke_master_ipv4_cidr_block" {
