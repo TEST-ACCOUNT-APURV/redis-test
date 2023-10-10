@@ -5,7 +5,7 @@ resource "humanitec_resource_definition" "gcp_dynamic_memorystore_redis" {
   id          = "dynamic-memorystore"
   name        = "dynamic-memorystore"
   type        = "redis"
-  driver_type = "${var.humanitec_credentials.organization}/terraform"
+  driver_type = "humanitec/terraform"
 
   driver_inputs = {
     values_string = jsonencode({
