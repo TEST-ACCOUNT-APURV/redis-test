@@ -13,6 +13,7 @@ resource "humanitec_resource_definition" "gcp_dynamic_memorystore_redis" {
       port = google_redis_instance.memorystore.port
     })
     secrets_string = jsonencode({
+      username = ""
       password = google_redis_instance.memorystore.auth_string
     })
   }
