@@ -6,7 +6,7 @@ output "port" {
   value = google_redis_instance.memorystore.port
 }
 
-output "user" {
+output "username" {
   value     = ""
   sensitive = true
 }
