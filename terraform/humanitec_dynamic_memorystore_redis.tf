@@ -9,12 +9,16 @@ resource "humanitec_resource_definition" "gcp_dynamic_memorystore_redis" {
 
   driver_inputs = {
     values_string = jsonencode({
-      host = google_redis_instance.memorystore.host
-      port = google_redis_instance.memorystore.port
+      append_logs_to_error = true
+      source = {
+        path = "resources/memorystore-new"
+        url = "https://github.com/Humanitec-DemoOrg/google-cloud-reference-architecture.git"
+        rev = "refs/heads/main"
+      }
     })
+
     secrets_string = jsonencode({
-      username = ""
-      password = google_redis_instance.memorystore.auth_string
+      credentials = "FIXME"
     })
   }
 
