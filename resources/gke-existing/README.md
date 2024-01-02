@@ -54,11 +54,11 @@ HUMANITEC_ENVIRONMENT=FIXME
 
 ```bash
 cat <<EOF > gke-cluster-existing.yaml
-apiVersion: core.api.humanitec.io/v1
+apiVersion: entity.humanitec.io/v1b1
 kind: Definition
 metadata:
   id: gke-cluster-existing
-object:
+entity:
   name: gke-cluster-existing
   type: k8s-cluster
   driver_type: humanitec/terraform

@@ -47,11 +47,11 @@ HUMANITEC_ENVIRONMENT=FIXME
 
 ```bash
 cat <<EOF > memorystore-new.yaml
-apiVersion: core.api.humanitec.io/v1
+apiVersion: entity.humanitec.io/v1b1
 kind: Definition
 metadata:
   id: memorystore-new
-object:
+entity:
   name: memorystore-new
   type: redis
   driver_type: humanitec/terraform

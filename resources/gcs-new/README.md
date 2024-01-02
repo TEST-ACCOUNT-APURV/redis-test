@@ -45,11 +45,11 @@ HUMANITEC_ENVIRONMENT=FIXME
 
 ```bash
 cat <<EOF > gcs-new.yaml
-apiVersion: core.api.humanitec.io/v1
+apiVersion: entity.humanitec.io/v1b1
 kind: Definition
 metadata:
   id: gcs-new
-object:
+entity:
   name: gcs-new
   type: gcs
   driver_type: humanitec/terraform
