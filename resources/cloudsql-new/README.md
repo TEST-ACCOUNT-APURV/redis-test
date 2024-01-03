@@ -3,7 +3,6 @@ cd resources/cloudsql-new
 
 PROJECT_ID=FIXME
 REGION=FIXME
-NETWORK=FIXME
 ```
 
 ## Create the GSA to provision the Terraform resources
