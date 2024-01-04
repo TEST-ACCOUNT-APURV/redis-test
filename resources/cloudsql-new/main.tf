@@ -34,6 +34,15 @@ resource "google_sql_database_instance" "instance" {
 
   settings {
     tier = var.tier
+
+    ip_configuration {
+      dynamic "authorized_networks" {
+        for_each = var.authorized_networks
+        content {
+          value = authorized_networks.key
+        }
+      }
+    }
   }
 }
 
