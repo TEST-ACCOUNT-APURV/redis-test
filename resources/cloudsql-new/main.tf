@@ -39,7 +39,7 @@ resource "google_sql_database_instance" "instance" {
       dynamic "authorized_networks" {
         for_each = var.authorized_networks
         content {
-          value = authorized_networks.key
+          value = authorized_networks.value
         }
       }
     }
