@@ -34,3 +34,8 @@ jobs:
           cd resources/cloudsql-new
           terraform init -backend=false
           terraform validate
+      - name: terraform validate - cloudsql-database-new
+        run: |
+          cd resources/cloudsql-database-new
+          terraform init -backend=false
+          terraform validate

@@ -44,28 +44,34 @@ HUMANITEC_ENVIRONMENT=FIXME
 ```
 
 ```bash
-cat <<EOF > cloudsql-new.yaml
+CLOUD_SQL_INSTANCE_NAME=FIXME
+CLOUD_SQL_INSTANCE_USERNAME=FIXME
+CLOUD_SQL_INSTANCE_PASSWORD=FIXME
+
+cat <<EOF > cloudsql-database-new.yaml
 apiVersion: entity.humanitec.io/v1b1
 kind: Definition
 metadata:
-  id: cloudsql-new
+  id: cloudsql-database-new
 entity:
-  name: cloudsql-new
+  name: cloudsql-database-new
   type: postgres
   driver_type: humanitec/terraform
   driver_inputs:
     values:
       append_logs_to_error: true
       source:
-        path: resources/cloudsql-new
+        path: resources/cloudsql-database-new
         rev: refs/heads/main
         url: https://github.com/Humanitec-DemoOrg/google-cloud-reference-architecture.git
       variables:
         project_id: ${PROJECT_ID}
-        location: ${LOCATION}
+        instance_name: ${CLOUD_SQL_INSTANCE_NAME}
     secrets:
       variables:
         credentials: $(cat ${SA_NAME}.json | jq -r tostring)
+        username: ${CLOUD_SQL_INSTANCE_USERNAME}
+        password: ${CLOUD_SQL_INSTANCE_PASSWORD}
   criteria:
     - env_id: ${ENVIRONMENT}
 EOF
@@ -73,5 +79,5 @@ EOF
 
 ```bash
 humctl create \
-    -f cloudsql-new.yaml
+    -f cloudsql-database-new.yaml
 ```
