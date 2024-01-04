@@ -28,5 +28,5 @@ variable "tier" {
 
 variable "authorized_networks" {
   type    = list
-  default = ["0.0.0.0"]
+  default = ["0.0.0.0/0"]
 }
