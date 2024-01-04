@@ -12,5 +12,5 @@ terraform {
 
 provider "google" {
   project     = var.project_id
-  credentials = jsonencode(var.credentials)
+  credentials = var.credentials
 }
