@@ -16,7 +16,7 @@ provider "google" {
 
   default_labels = {
     "hum-namespace" = var.namespace
-    "hum-workload"  = var.workload
+    "hum-workload"  = replace(var.workload, ".", "-")
     "hum-ksa"       = var.ksa
   }
 }
