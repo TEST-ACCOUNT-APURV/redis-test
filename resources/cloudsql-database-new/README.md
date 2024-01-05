@@ -69,7 +69,7 @@ entity:
         instance_name: ${CLOUD_SQL_INSTANCE_NAME}
     secrets:
       variables:
-        credentials: $(cat ${SA_NAME}.json | jq -r tostring)
+        credentials: '$(cat ${SA_NAME}.json | jq -r tostring)'
         username: ${CLOUD_SQL_INSTANCE_USERNAME}
         password: ${CLOUD_SQL_INSTANCE_PASSWORD}
   criteria:

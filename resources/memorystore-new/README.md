@@ -68,7 +68,7 @@ entity:
         network: ${NETWORK}
     secrets:
       variables:
-        credentials: $(cat ${SA_NAME}.json | jq -r tostring)
+        credentials: '$(cat ${SA_NAME}.json | jq -r tostring)'
   criteria:
     - env_id: ${ENVIRONMENT}
 EOF

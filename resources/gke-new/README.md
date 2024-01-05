@@ -68,7 +68,7 @@ entity:
         existing_gar_repo_name: ${GAR_NAME}
     secrets:
       variables:
-        credentials: $(cat ${SA_NAME}.json | jq -r tostring)
+        credentials: '$(cat ${SA_NAME}.json | jq -r tostring)'
   criteria:
     - env_id: ${ENVIRONMENT}
 EOF

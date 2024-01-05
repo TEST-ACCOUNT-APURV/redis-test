@@ -77,7 +77,7 @@ entity:
         ip_address_region: ${IP_ADDRESS_REGION}
     secrets:
       variables:
-        credentials: $(cat ${SA_NAME}.json | jq -r tostring)
+        credentials: '$(cat ${SA_NAME}.json | jq -r tostring)'
   criteria:
     - env_id: ${HUMANITEC_ENVIRONMENT}
 EOF
