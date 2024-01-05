@@ -70,7 +70,7 @@ entity:
       variables:
         project_id: ${PROJECT_ID}
         region: ${REGION}
-        namespace: \${resources.namespace.outputs.namespace}
+        namespace: \${resources.k8s-namespace.outputs.namespace}
         ksa: \${resources.k8s-service-account.outputs.name}
         workload: \${context.res.id}
     secrets:
