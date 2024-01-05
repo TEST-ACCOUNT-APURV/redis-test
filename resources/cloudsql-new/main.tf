@@ -28,9 +28,10 @@ resource "random_string" "cloudsql_user_password" {
 
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/sql_database_instance
 resource "google_sql_database_instance" "instance" {
-  name             = "instance-${random_string.cloudsql_instance_name.result}"
-  database_version = var.database_version
-  region           = var.location
+  name                = "instance-${random_string.cloudsql_instance_name.result}"
+  database_version    = var.database_version
+  region              = var.location
+  deletion_protection = var.instance_deletion_protection
 
   settings {
     tier = var.tier

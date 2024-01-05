@@ -14,6 +14,12 @@ variable "location" {
   type        = string
 }
 
+variable "instance_deletion_protection" {
+  description = "The Cloud SQL instance deletion protection"
+  type        = bool
+  default     = true
+}
+
 variable "database_version" {
   description = "The Cloud SQL Database version"
   type        = string
