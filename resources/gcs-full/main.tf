@@ -1,3 +1,7 @@
+locals {
+  workload = "${trimprefix(var.workload, "modules.app.externals.")}"
+}
+
 resource "random_string" "bucket_name" {
   length  = 10
   special = false
@@ -21,8 +25,8 @@ resource "google_storage_bucket_iam_member" "admin" {
 
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/google_service_account
 resource "google_service_account" "gsa" {
-  display_name = "${var.workload} service account"
-  account_id   = var.workload
+  display_name = "${local.workload} service account"
+  account_id   = local.workload
 }
 
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/google_service_account_iam
