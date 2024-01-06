@@ -39,3 +39,13 @@ jobs:
           cd resources/cloudsql-database-new
           terraform init -backend=false
           terraform validate
+      - name: terraform validate - gsa
+        run: |
+          cd resources/gsa
+          terraform init -backend=false
+          terraform validate
+      - name: terraform validate - gcs-full
+        run: |
+          cd resources/gcs-full
+          terraform init -backend=false
+          terraform validate
