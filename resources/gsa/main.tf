@@ -1,11 +1,11 @@
 locals {
-  workload_name = "${element(split(var.res_id, "."), length(split(var.res_id, "."))-1)}"
+  gsa_name = "${split(".", var.res_id)[1]}-gsa"
 }
 
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/google_service_account
 resource "google_service_account" "gsa" {
-  display_name = "${local.workload_name} service account"
-  account_id   = local.workload_name
+  display_name = "${local.gsa_name} service account"
+  account_id   = local.gsa_name
 }
 
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/google_service_account_iam

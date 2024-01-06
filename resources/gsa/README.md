@@ -26,16 +26,15 @@ terraform init -upgrade
 
 terraform validate
 
-NAMESPACE=namespace
-WORKLOAD=workload
-KSA=ksa
+NAMESPACE=namespace-name
+RES_ID=modules.workload-id.externals.resource-id
+KSA=ksa-name
 
 terraform plan \
     -var credentials="$(cat ${SA_NAME}.json | jq -r tostring)" \
     -var project_id=${PROJECT_ID} \
-    -var region=${REGION} \
     -var namespace=${NAMESPACE} \
-    -var workload=${WORKLOAD} \
+    -var res_id=${RES_ID} \
     -var ksa=${KSA} \
     -out tfplan
 
