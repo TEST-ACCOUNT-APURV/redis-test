@@ -84,3 +84,14 @@ EOF
 humctl create \
     -f gcs-full.yaml
 ```
+
+```bash
+score-humanitec delta \
+    --app ${APP} \
+    --env ${ENVIRONMENT} \
+    --org ${HUMANITEC_ORG} \
+    --token ${HUMANITEC_TOKEN} \
+    --deploy \
+    --retry \
+    -f score.yaml
+```
