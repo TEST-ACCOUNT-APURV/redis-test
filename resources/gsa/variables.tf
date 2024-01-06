@@ -1,11 +1,16 @@
 variable "credentials" {
-  description = "The credentials for connecting to Google Cloud."
+  description = "The credentials for connecting to Google Cloud"
   type        = string
   sensitive   = true
 }
 
 variable "project_id" {
-  description = "ID of the Google Cloud Project"
+  description = "ID of the Google Cloud Project where the GSA is created"
+  type        = string
+}
+
+variable "gke_project_id" {
+  description = "ID of the Google Cloud Project of the GKE cluster (related to the Workload Identity setup)."
   type        = string
 }
 
@@ -22,10 +27,4 @@ variable "res_id" {
 variable "ksa" {
   description = "The Name of the Kubernetes Service Account of the Workload"
   type        = string
-}
-
-variable "roles" {
-  description = "List of roles to assign to the Google service account"
-  type        = set(string)
-  default     = []
 }
