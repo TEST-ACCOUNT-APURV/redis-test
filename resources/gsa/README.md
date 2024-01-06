@@ -51,27 +51,27 @@ HUMANITEC_ENVIRONMENT=FIXME
 ```
 
 ```bash
-cat <<EOF > gcs-full.yaml
+cat <<EOF > gsa.yaml
 apiVersion: entity.humanitec.io/v1b1
 kind: Definition
 metadata:
-  id: gcs-full
+  id: gsa
 entity:
-  name: gcs-full
-  type: gcs
+  name: gsa
+  type: gcp-service-account
   driver_type: humanitec/terraform
   driver_inputs:
     values:
       append_logs_to_error: true
       source:
-        path: resources/gcs-full
+        path: resources/gsa
         rev: refs/heads/main
         url: https://github.com/Humanitec-DemoOrg/google-cloud-reference-architecture.git
       variables:
         project_id: ${PROJECT_ID}
-        region: ${REGION}
         namespace: \${resources.k8s-namespace.outputs.namespace}
-        gsa_email: \${resources.gcp-service-account.outputs.email}
+        ksa: \${resources.k8s-service-account.outputs.name}
+        workload: \${context.res.id}
     secrets:
       variables:
         credentials: '$(cat ${SA_NAME}.json | jq -r tostring)'
@@ -82,5 +82,5 @@ EOF
 
 ```bash
 humctl create \
-    -f gcs-full.yaml
+    -f gsa.yaml
 ```

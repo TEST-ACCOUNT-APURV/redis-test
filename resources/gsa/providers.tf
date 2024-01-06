@@ -15,6 +15,8 @@ provider "google" {
   credentials = var.credentials
 
   default_labels = {
-    "hum-gsa"       = var.gsa_email
+    "hum-namespace" = var.namespace
+    "hum-workload"  = replace(var.workload, ".", "-")
+    "hum-ksa"       = var.ksa
   }
 }
