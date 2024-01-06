@@ -69,6 +69,7 @@ entity:
       variables:
         project_id: ${PROJECT_ID}
         namespace: \${resources.k8s-namespace.outputs.namespace}
+        ksa: \${resources.k8s-service-account.outputs.name}
         res_id: \${context.res.id}
     secrets:
       variables:

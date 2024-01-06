@@ -19,6 +19,11 @@ variable "res_id" {
   type        = string
 }
 
+variable "ksa" {
+  description = "The Name of the Kubernetes Service Account of the Workload"
+  type        = string
+}
+
 variable "roles" {
   description = "List of roles to assign to the Google service account"
   type        = set(string)
