@@ -14,8 +14,8 @@ variable "namespace" {
   type        = string
 }
 
-variable "workload" {
-  description = "The Name of the Workload"
+variable "res_id" {
+  description = "The ID of the resource (i.e. modules.workload-id.externals.resource-id)"
   type        = string
 }
 
