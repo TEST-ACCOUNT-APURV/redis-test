@@ -1,3 +1,9 @@
+This GSA setup (i.e. `gcp-service-account` resource definition) assumes that other resource definitions are also existing:
+- `k8s-service-account`
+- `config`
+
+_Note: `k8s-cluster` and `k8s-namespace` are implicit ones, already defined._
+
 ```bash
 cd resources/gcs-full
 
@@ -67,20 +73,18 @@ entity:
         rev: refs/heads/main
         url: https://github.com/Humanitec-DemoOrg/google-cloud-reference-architecture.git
       variables:
-        project_id: ${PROJECT_ID}
+        project_id: \${resources.config.outputs.project_id}
         gke_project_id: \${resources.k8s-cluster.outputs.project_id}
         namespace: \${resources.k8s-namespace.outputs.namespace}
         ksa: \${resources.k8s-service-account.outputs.name}
         res_id: \${context.res.id}
     secrets:
       variables:
-        credentials: '$(cat ${SA_NAME}.json | jq -r tostring)'
+        credentials: \${resources.config.outputs.credentials}
   criteria:
     - {}
 EOF
-```
 
-```bash
 humctl create \
     -f gsa.yaml
 ```

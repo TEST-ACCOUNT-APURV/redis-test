@@ -1,4 +1,6 @@
 locals {
+  # FIXME - needs to be tested with shared too.
+  # Only tested in this format so far: "modules.workload-id.externals.resource-id".
   gsa_name = "${split(".", var.res_id)[1]}-gsa"
 }
 
