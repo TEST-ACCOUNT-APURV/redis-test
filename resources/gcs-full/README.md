@@ -175,6 +175,7 @@ entity:
         credentials: \${resources.config.outputs.credentials}
   criteria:
     - {}
+EOF
 
 humctl create \
     -f gsa.yaml
