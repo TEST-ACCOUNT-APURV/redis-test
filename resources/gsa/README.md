@@ -1,23 +1,31 @@
-This GSA setup (i.e. `gcp-service-account` resource definition) assumes that other resource definitions are also existing:
-- `k8s-service-account`
+This GSA setup (i.e. `gcp-service-account` resource definition) needs other resource definitions:
 - `config`
 
-_Note: `k8s-cluster` and `k8s-namespace` are implicit ones, already defined._
+```bash
+cd resources/gsa
+```
+
+## Create the Humanitec App
 
 ```bash
-cd resources/gcs-full
+APP=FIXME
+```
 
-PROJECT_ID=FIXME
-REGION=FIXME
+```bash
+humctl create app ${APP} \
+    --name ${APP}
 ```
 
 ## Create the GSA to provision the Terraform resources
 
 ```bash
+PROJECT_ID=FIXME
 SA_NAME=humanitec-terraform
-SA_ID=${SA_NAME}@${PROJECT_ID}.iam.gserviceaccount.com
+SA_ID=${SA_NAME}@${GSA_PROJECT_ID}.iam.gserviceaccount.com
+
 gcloud iam service-accounts create ${SA_NAME} \
-    --display-name=${SA_NAME}
+    --display-name=${SA_NAME} \
+    --project 
 gcloud projects add-iam-policy-binding ${PROJECT_ID} \
     --member "serviceAccount:${SA_ID}" \
     --role "roles/editor"
@@ -32,28 +40,62 @@ terraform init -upgrade
 
 terraform validate
 
-NAMESPACE=namespace-name
 RES_ID=modules.workload-id.externals.resource-id
-KSA=ksa-name
 
 terraform plan \
     -var credentials="$(cat ${SA_NAME}.json | jq -r tostring)" \
     -var project_id=${PROJECT_ID} \
-    -var namespace=${NAMESPACE} \
     -var res_id=${RES_ID} \
-    -var ksa=${KSA} \
     -out tfplan
 
 terraform apply \
     tfplan
 ```
 
-## Create the associated resource definition in Humanitec
+## Create the associated resource definitions in Humanitec
 
 ```bash
 HUMANITEC_ORG=FIXME
-HUMANITEC_ENVIRONMENT=FIXME
+HUMANITEC_TOKEN=FIXME
 ```
+
+### Create the App's `config` resource definition
+
+```bash
+PROJECT_ID=FIXME
+REGION=FIXME
+```
+
+```bash
+cat <<EOF > ${APP}-app-config.yaml
+apiVersion: entity.humanitec.io/v1b1
+kind: Definition
+metadata:
+  id: ${APP}-app-config
+entity:
+  name: ${APP}-app-config
+  type: config
+  driver_type: humanitec/template
+  driver_inputs:
+    values:
+      templates:
+        outputs: |
+          project_id: ${PROJECT_ID}
+          region: ${REGION}
+    secrets:
+      templates:
+        outputs: |
+          credentials: '$(cat ${SA_NAME}.json | jq -r tostring)'
+  criteria:
+    - app_id: ${APP}
+      class: default
+EOF
+
+humctl create \
+    -f ${APP}-app-config.yaml
+```
+
+### Create the `gcp-service-account` resource definition
 
 ```bash
 cat <<EOF > gsa.yaml
@@ -74,9 +116,6 @@ entity:
         url: https://github.com/Humanitec-DemoOrg/google-cloud-reference-architecture.git
       variables:
         project_id: \${resources.config.outputs.project_id}
-        gke_project_id: \${resources.k8s-cluster.outputs.project_id}
-        namespace: \${resources.k8s-namespace.outputs.namespace}
-        ksa: \${resources.k8s-service-account.outputs.name}
         res_id: \${context.res.id}
     secrets:
       variables:
@@ -88,3 +127,5 @@ EOF
 humctl create \
     -f gsa.yaml
 ```
+
+For an example with Workload Identity, see [`gcs`](../gcs-full/).

@@ -9,22 +9,18 @@ variable "project_id" {
   type        = string
 }
 
-variable "gke_project_id" {
-  description = "ID of the Google Cloud Project of the GKE cluster (related to the Workload Identity setup)."
-  type        = string
-}
-
-variable "namespace" {
-  description = "The Kubernetes Namespace where the Workload and the Service Account are deployed"
-  type        = string
-}
-
 variable "res_id" {
   description = "The ID of the resource (i.e. modules.workload-id.externals.resource-id)"
   type        = string
 }
 
-variable "ksa" {
-  description = "The Name of the Kubernetes Service Account of the Workload"
-  type        = string
+variable "workload_identity" {
+  description = "The information to enable Workload Identity on this GSA."
+  type = object({
+    gke_project_id  = string
+    namespace       = string
+    ksa             = string
+  })
+  sensitive = true
+  default   = null
 }

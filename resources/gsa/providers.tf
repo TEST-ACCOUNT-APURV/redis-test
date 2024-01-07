@@ -13,10 +13,4 @@ terraform {
 provider "google" {
   project     = var.project_id
   credentials = var.credentials
-
-  default_labels = {
-    "hum-namespace" = var.namespace
-    "hum-workload"  = replace(var.res_id, ".", "-")
-    "hum-ksa"       = var.ksa
-  }
 }
