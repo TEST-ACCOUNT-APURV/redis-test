@@ -210,7 +210,7 @@ humctl create \
 ```
 _Note: we are making a decision here to have a Kubernetes `ServiceAccount` per Workload, for any Workloads. See next section to see how this `ServiceAccount` is created._
 
-### Create the `k8s-service-account` resource definition
+### Create the `k8s-service-account` resource definitions
 
 By default, for any Workload, we create a dedicated `ServiceAccount`:
 ```bash
