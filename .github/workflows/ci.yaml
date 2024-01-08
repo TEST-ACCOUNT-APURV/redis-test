@@ -49,3 +49,8 @@ jobs:
           cd resources/gcs-full
           terraform init -backend=false
           terraform validate
+      - name: terraform validate - cloud-endpoint
+        run: |
+          cd resources/cloud-endpoint
+          terraform init -backend=false
+          terraform validate
