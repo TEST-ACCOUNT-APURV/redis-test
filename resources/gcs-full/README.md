@@ -4,6 +4,10 @@ This GCS setup (i.e. `gcs` resource definition) needs other resource definitions
 - `gcp-service-account`
 - `config`
 
+Current resource graph:
+
+![](resource-graph.png)
+
 ```bash
 cd resources/gcs-full
 ```
