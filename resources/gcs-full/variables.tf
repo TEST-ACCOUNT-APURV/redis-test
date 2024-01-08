@@ -5,32 +5,16 @@ variable "credentials" {
 }
 
 variable "project_id" {
-  description = "ID of the Google Cloud Project"
+  description = "The ID of the Google Cloud Project."
   type        = string
 }
 
 variable "region" {
-  description = "The GCS bucket region"
+  description = "The region of the GCS bucket."
   type        = string
 }
 
-variable "namespace" {
-  description = "The Kubernetes Namespace where the Workload and the Service Account are deployed"
+variable "gsa_email" {
+  description = "The email address of the GCP Service Account accessing the GCS bucket."
   type        = string
-}
-
-variable "workload" {
-  description = "The Name of the Workload"
-  type        = string
-}
-
-variable "ksa" {
-  description = "The Name of the Kubernetes Service Account of the Workload"
-  type        = string
-}
-
-variable "roles" {
-  description = "List of roles to assign to the Google service account"
-  type        = set(string)
-  default     = []
 }
