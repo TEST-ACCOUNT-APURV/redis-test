@@ -74,16 +74,18 @@ HUMANITEC_TOKEN=FIXME
 ```bash
 PROJECT_ID=FIXME
 REGION=FIXME
+
+ENVIRONMENT=development
 ```
 
 ```bash
-cat <<EOF > ${APP}-app-config.yaml
+cat <<EOF > ${APP}-${ENVIRONMENT}-config.yaml
 apiVersion: entity.humanitec.io/v1b1
 kind: Definition
 metadata:
-  id: ${APP}-app-config
+  id: ${APP}-${ENVIRONMENT}-config
 entity:
-  name: ${APP}-app-config
+  name: ${APP}-${ENVIRONMENT}-config
   type: config
   driver_type: humanitec/template
   driver_inputs:
@@ -98,13 +100,15 @@ entity:
           credentials: '$(cat ${SA_NAME}.json | jq -r tostring)'
   criteria:
     - app_id: ${APP}
+      env_id: ${ENVIRONMENT}
       class: default
     - app_id: ${APP}
+      env_id: ${ENVIRONMENT}
       class: workload-identity
 EOF
 
 humctl create \
-    -f ${APP}-app-config.yaml
+    -f ${APP}-${ENVIRONMENT}-config.yaml
 ```
 _Note: we need to add a matching criteria with `class: workload-identity` in addition to the `default` one because this `config` will be called by the `k8s-service-account` explicitly defined in Score with this `class: workload-identity`._
 
@@ -284,11 +288,6 @@ humctl create \
 _Note: the value of the annotation `iam.gke.io/gcp-service-account` is kind of hard-coded with `{{ .init.name }}-gsa@\${resources.config.outputs.project_id}.iam.gserviceaccount.com` instead of `\${resources.gcp-service-account.outputs.email}` because with the later I'm getting a dependency cycle error between both the ksa and the gsa._
 
 ## Deploy the sample app using this GCS setup
-
-```bash
-APP=FIXME
-ENVIRONMENT=FIXME
-```
 
 ```bash
 score-humanitec delta \

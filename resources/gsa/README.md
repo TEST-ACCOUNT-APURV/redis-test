@@ -64,16 +64,18 @@ HUMANITEC_TOKEN=FIXME
 ```bash
 PROJECT_ID=FIXME
 REGION=FIXME
+
+ENVIRONMENT=development
 ```
 
 ```bash
-cat <<EOF > ${APP}-app-config.yaml
+cat <<EOF > ${APP}-${ENVIRONMENT}-config.yaml
 apiVersion: entity.humanitec.io/v1b1
 kind: Definition
 metadata:
-  id: ${APP}-app-config
+  id: ${APP}-${ENVIRONMENT}-config
 entity:
-  name: ${APP}-app-config
+  name: ${APP}-${ENVIRONMENT}-config
   type: config
   driver_type: humanitec/template
   driver_inputs:
@@ -88,11 +90,12 @@ entity:
           credentials: '$(cat ${SA_NAME}.json | jq -r tostring)'
   criteria:
     - app_id: ${APP}
+      env_id: ${ENVIRONMENT}
       class: default
 EOF
 
 humctl create \
-    -f ${APP}-app-config.yaml
+    -f ${APP}-${ENVIRONMENT}-config.yaml
 ```
 
 ### Create the `gcp-service-account` resource definition
