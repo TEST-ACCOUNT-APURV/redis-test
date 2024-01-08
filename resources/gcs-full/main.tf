@@ -15,6 +15,6 @@ resource "google_storage_bucket" "bucket" {
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket_iam
 resource "google_storage_bucket_iam_member" "admin" {
   bucket = google_storage_bucket.bucket.name
-  role   = "roles/storage.admin"
+  role   = var.gcs_role
   member = "serviceAccount:${var.gsa_email}"
 }
