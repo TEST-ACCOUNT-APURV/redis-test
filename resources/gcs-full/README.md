@@ -4,6 +4,10 @@ This GCS setup (i.e. `gcs` resource definition) needs other resource definitions
 - `gcp-service-account`
 - `config`
 
+Remaining tasks:
+- Test with shared GCS
+- Test with Operator
+
 Current resource graph:
 
 ![](resource-graph.png)
