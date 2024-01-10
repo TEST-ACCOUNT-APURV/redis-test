@@ -119,7 +119,7 @@ entity:
         url: https://github.com/Humanitec-DemoOrg/google-cloud-reference-architecture.git
       variables:
         project_id: \${resources.config.outputs.project_id}
-        res_id: \${context.res.id}
+        name: \${resources.k8s-service-account.outputs.name}-\${resources.k8s-namespace.outputs.namespace}
     secrets:
       variables:
         credentials: \${resources.config.outputs.credentials}

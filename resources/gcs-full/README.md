@@ -173,11 +173,11 @@ entity:
       append_logs_to_error: true
       source:
         path: resources/gsa
-        rev: refs/heads/main
+        rev: refs/heads/gsa-name
         url: https://github.com/Humanitec-DemoOrg/google-cloud-reference-architecture.git
       variables:
         project_id: \${resources.config.outputs.project_id}
-        res_id: \${context.res.id}
+        name: \${resources.k8s-service-account.outputs.name}-\${resources.k8s-namespace.outputs.namespace}
         workload_identity:
           gke_project_id: \${resources.k8s-cluster.outputs.project_id}
           namespace: \${resources.k8s-namespace.outputs.namespace}

@@ -9,8 +9,8 @@ variable "project_id" {
   type        = string
 }
 
-variable "res_id" {
-  description = "The ID of the resource (i.e. modules.workload-id.externals.resource-id)."
+variable "name" {
+  description = "The Name of the GSA."
   type        = string
 }
 
