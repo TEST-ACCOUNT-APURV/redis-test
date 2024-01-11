@@ -24,6 +24,3 @@ service:
 resources:
   gcs:
     type: gcs
-  service-account:
-    type: k8s-service-account
-    class: workload-identity

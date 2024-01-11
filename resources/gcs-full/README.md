@@ -113,9 +113,6 @@ entity:
     - app_id: ${APP}
       env_id: ${ENVIRONMENT}
       class: default
-    - app_id: ${APP}
-      env_id: ${ENVIRONMENT}
-      class: workload-identity
 EOF
 
 humctl create \
@@ -225,17 +222,17 @@ humctl create \
 ```
 _Note: we are making a decision here to have a Kubernetes `ServiceAccount` per Workload, for any Workloads. See next section to see how this `ServiceAccount` is created._
 
-### Create the `k8s-service-account` resource definitions
+### Create the `k8s-service-account` resource definition
 
-By default, for any Workload, we create a dedicated `ServiceAccount`:
+Now, for any `k8s-service-account` explicitly defined with `class: workload-identity`, we will define this `ServiceAccount` with the Workload Identity annotation:
 ```bash
-cat <<EOF > service-account.yaml
+cat <<EOF > custom-service-account.yaml
 apiVersion: entity.humanitec.io/v1b1
 kind: Definition
 metadata:
-  id: service-account
+  id: custom-service-account
 entity:
-  name: service-account
+  name: custom-service-account
   type: k8s-service-account
   driver_type: humanitec/template
   driver_inputs:
@@ -250,7 +247,11 @@ entity:
               apiVersion: v1
               kind: ServiceAccount
               metadata:
+                
+                annotations:
+                  iam.gke.io/gcp-service-account: \${resources.gcp-service-account.outputs.email}
                 name: {{ .init.name }}
+                
         outputs: |
           name: {{ .init.name }}
   criteria:
@@ -258,45 +259,8 @@ entity:
 EOF
 
 humctl create \
-    -f service-account.yaml
+    -f custom-service-account.yaml
 ```
-
-Now, for any `k8s-service-account` explicitly defined with `class: workload-identity`, we will define this `ServiceAccount` with the Workload Identity annotation:
-```bash
-cat <<EOF > service-account-with-workload-identity.yaml
-apiVersion: entity.humanitec.io/v1b1
-kind: Definition
-metadata:
-  id: service-account-with-workload-identity
-entity:
-  name: service-account-with-workload-identity
-  type: k8s-service-account
-  driver_type: humanitec/template
-  driver_inputs:
-    values:
-      templates:
-        init: |
-          name: {{ index (regexSplit "\\\\." "\$\${context.res.id}" -1) 1 }}
-        manifests: |-
-          service-account.yaml:
-            location: namespace
-            data:
-              apiVersion: v1
-              kind: ServiceAccount
-              metadata:
-                annotations:
-                  iam.gke.io/gcp-service-account: {{ .init.name }}-gsa@\${resources.config.outputs.project_id}.iam.gserviceaccount.com
-                name: {{ .init.name }}
-        outputs: |
-          name: {{ .init.name }}
-  criteria:
-    - class: workload-identity
-EOF
-
-humctl create \
-    -f service-account-with-workload-identity.yaml
-```
-_Note: the value of the annotation `iam.gke.io/gcp-service-account` is kind of hard-coded with `{{ .init.name }}-gsa@\${resources.config.outputs.project_id}.iam.gserviceaccount.com` instead of `\${resources.gcp-service-account.outputs.email}` because with the later I'm getting a dependency cycle error between both the ksa and the gsa._
 
 ## Deploy the sample app using this GCS setup
 
