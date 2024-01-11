@@ -11,7 +11,15 @@ Remaining tasks:
 - Optimize the resource graph (2 `configs` instead of 1 and 3 `k8s-service-accounts` instead of 1)
 - Remove the `gsa` in Score, Dev shouldn't provide this
 
-Current resource graph:
+Targeted resource graph:
+```mermaid
+graph LR
+  workload --> k8s-service-account
+  k8s-service-account --> google-service-account
+  gcs --> google-service-account
+```
+
+Current resource graph (FIXME):
 
 ![](resource-graph.png)
 
@@ -112,13 +120,11 @@ entity:
   criteria:
     - app_id: ${APP}
       env_id: ${ENVIRONMENT}
-      class: default
 EOF
 
 humctl create \
     -f ${APP}-${ENVIRONMENT}-config.yaml
 ```
-_Note: we need to add a matching criteria with `class: workload-identity` in addition to the `default` one because this `config` will be called by the `k8s-service-account` explicitly defined in Score with this `class: workload-identity`._
 
 ### Create the `gcs` resource definition
 
@@ -138,16 +144,16 @@ entity:
       append_logs_to_error: true
       source:
         path: resources/gcs-full
-        rev: refs/heads/main
+        rev: refs/heads/rework
         url: https://github.com/Humanitec-DemoOrg/google-cloud-reference-architecture.git
       variables:
-        project_id: \${resources.config.outputs.project_id}
-        region: \${resources.config.outputs.region}
-        namespace: \${resources.k8s-namespace.outputs.namespace}
+        project_id: \${resources.config.default#config.outputs.project_id}
+        region: \${resources.config.default#config.outputs.region}
+        namespace: \${resources.k8s-namespace.default#k8s-namespace.outputs.namespace}
         gsa_email: \${resources.gcp-service-account.outputs.email}
     secrets:
       variables:
-        credentials: \${resources.config.outputs.credentials}
+        credentials: \${resources.config.default#config.outputs.credentials}
   criteria:
     - {}
 EOF
@@ -173,15 +179,15 @@ entity:
       append_logs_to_error: true
       source:
         path: resources/gsa
-        rev: refs/heads/main
+        rev: refs/heads/rework
         url: https://github.com/Humanitec-DemoOrg/google-cloud-reference-architecture.git
       variables:
         project_id: \${resources.config.outputs.project_id}
-        res_id: \${context.res.id}
+        name_prefix: {{ index (regexSplit "\\\\." "\$\${context.res.id}" -1) 1 }}
         workload_identity:
           gke_project_id: \${resources.k8s-cluster.outputs.project_id}
           namespace: \${resources.k8s-namespace.outputs.namespace}
-          ksa: \${resources.k8s-service-account.outputs.name}
+          ksa: {{ index (regexSplit "\\\\." "\$\${context.res.id}" -1) 1 }}
     secrets:
       variables:
         credentials: \${resources.config.outputs.credentials}
@@ -247,11 +253,9 @@ entity:
               apiVersion: v1
               kind: ServiceAccount
               metadata:
-                
                 annotations:
                   iam.gke.io/gcp-service-account: \${resources.gcp-service-account.outputs.email}
                 name: {{ .init.name }}
-                
         outputs: |
           name: {{ .init.name }}
   criteria:
