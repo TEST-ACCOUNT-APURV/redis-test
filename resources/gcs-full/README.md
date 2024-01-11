@@ -3,13 +3,15 @@ This GCS setup (i.e. `gcs` resource definition) needs other resource definitions
 - `k8s-service-account`
 - `gcp-service-account`
 - `config`
+- `aws-policy` (temporary, by waiting for `gcp-iam-member`)
 
 Remaining tasks:
 - Test with shared GCS
 - Test with Operator
-- Change the GSA name, needs to be `workload-k8s-namespace` format for unicity
-- Optimize the resource graph (2 `configs` instead of 1 and 3 `k8s-service-accounts` instead of 1)
 - Support read versus write roles
+- Test with Workload without any GSA WI need
+- Test with Workload with Spanner and GCS
+- Test with Workload with 2 GCS
 
 Targeted resource graphs:
 ```mermaid
@@ -22,9 +24,7 @@ graph LR
   google-service-account -- selects --> aws-policy
 ```
 
-Current resource graph (FIXME):
-
-![](resource-graph.png)
+Generated resource graph (FIXME):
 
 ```bash
 cd resources/gcs-full
