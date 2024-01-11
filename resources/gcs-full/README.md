@@ -24,7 +24,9 @@ graph LR
   google-service-account -- selects --> aws-policy
 ```
 
-Generated resource graph (FIXME):
+Generated resource graph:
+
+FIXME
 
 ```bash
 cd resources/gcs-full
@@ -154,7 +156,7 @@ entity:
         region: \${resources['config.default#config'].outputs.region}
     secrets:
       variables:
-        credentials: \${resources.config.default#config.outputs.credentials}
+        credentials: \${resources['config.default#config'].outputs.credentials}
   provision:
     aws-policy.gcs:
       is_dependent: false
@@ -175,13 +177,16 @@ apiVersion: entity.humanitec.io/v1b1
 kind: Definition
 metadata:
   id: gcs-admin-iam-member
-object:
+entity:
+  name: gcs-admin-iam-member
   type: aws-policy
-  driver_type: humanitec/config
+  driver_type: humanitec/template
   driver_inputs:
     values:
-      name: ${resources.gcs.outputs.name}
-      role: "roles/storage.admin"
+      templates:
+        outputs: |
+          name: \${resources.gcs.outputs.name}
+          role: "roles/storage.admin"
   criteria:
   - class: gcs
 EOF
@@ -204,6 +209,7 @@ entity:
   driver_type: humanitec/terraform
   driver_inputs:
     values:
+      workload_name: {{ index (regexSplit "\\\\." "\$\${context.res.id}" -1) 1 }}
       append_logs_to_error: true
       source:
         path: resources/gsa
@@ -211,12 +217,12 @@ entity:
         url: https://github.com/Humanitec-DemoOrg/google-cloud-reference-architecture.git
       variables:
         project_id: \${resources.config.outputs.project_id}
-        name_prefix: {{ index (regexSplit "\\\\." "\$\${context.res.id}" -1) 1 }}
+        name_prefix: \${.driver.values.workload_name}
         gcs_iam_members: \${resources.workload>aws-policy}
         workload_identity:
           gke_project_id: \${resources.k8s-cluster.outputs.project_id}
           namespace: \${resources.k8s-namespace.outputs.namespace}
-          ksa: {{ index (regexSplit "\\\\." "\$\${context.res.id}" -1) 1 }}
+          ksa: \${.driver.values.workload_name}
     secrets:
       variables:
         credentials: \${resources.config.outputs.credentials}
@@ -255,7 +261,6 @@ EOF
 humctl create \
     -f custom-workload.yaml
 ```
-_Note: we are making a decision here to have a Kubernetes `ServiceAccount` per Workload, for any Workloads. See next section to see how this `ServiceAccount` is created._
 
 ### Create the `k8s-service-account` resource definition
 
