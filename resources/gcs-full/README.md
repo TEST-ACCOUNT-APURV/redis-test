@@ -17,7 +17,7 @@ graph LR
   workload -- references --> k8s-service-account
   k8s-service-account -- references --> google-service-account
   gcs -- references --> google-service-account
-  workload -- score --> k8s-service-account
+  workload -- score --> gcs
 ```
 
 Current resource graph (FIXME):
