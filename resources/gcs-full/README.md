@@ -15,9 +15,11 @@ Targeted resource graphs:
 ```mermaid
 graph LR
   workload -- score --> gcs
+  gcs -- co-provisions -->  aws-policy
+  aws-policy -- references --> gcs
   workload -- references --> k8s-service-account
   k8s-service-account -- references --> google-service-account
-  google-service-account -- selects --> gcs
+  google-service-account -- selects --> aws-policy
 ```
 
 Current resource graph (FIXME):
@@ -148,13 +150,17 @@ entity:
         rev: refs/heads/rework
         url: https://github.com/Humanitec-DemoOrg/google-cloud-reference-architecture.git
       variables:
-        project_id: \${resources.config.default#config.outputs.project_id}
-        region: \${resources.config.default#config.outputs.region}
-        namespace: \${resources.k8s-namespace.default#k8s-namespace.outputs.namespace}
-        gsa_email: \${resources.gcp-service-account.outputs.email}
+        project_id: \${resources['config.default#config'].outputs.project_id}
+        region: \${resources['config.default#config'].outputs.region}
+        namespace: \${resources['k8s-namespace.default#k8s-namespace'].outputs.namespace}
+        gsa_email: \${resources['gcp-service-account.default#gcp-service-account'].outputs.email}
     secrets:
       variables:
         credentials: \${resources.config.default#config.outputs.credentials}
+  provision:
+    aws-policy:
+      is_dependent: false
+      match_dependents: true
   criteria:
     - {}
 EOF
@@ -231,7 +237,6 @@ _Note: we are making a decision here to have a Kubernetes `ServiceAccount` per W
 
 ### Create the `k8s-service-account` resource definition
 
-Now, for any `k8s-service-account` explicitly defined with `class: workload-identity`, we will define this `ServiceAccount` with the Workload Identity annotation:
 ```bash
 cat <<EOF > custom-service-account.yaml
 apiVersion: entity.humanitec.io/v1b1
@@ -255,7 +260,7 @@ entity:
               kind: ServiceAccount
               metadata:
                 annotations:
-                  iam.gke.io/gcp-service-account: \${resources.gcp-service-account.outputs.email}
+                  iam.gke.io/gcp-service-account: \${resources.[gcp-service-account.default#gcp-service-account].outputs.email}
                 name: {{ .init.name }}
         outputs: |
           name: {{ .init.name }}
