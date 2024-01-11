@@ -14,9 +14,10 @@ Remaining tasks:
 Targeted resource graph:
 ```mermaid
 graph LR
-  workload --> k8s-service-account
-  k8s-service-account --> google-service-account
-  gcs --> google-service-account
+  workload -- references --> k8s-service-account
+  k8s-service-account -- references --> google-service-account
+  gcs -- references --> google-service-account
+  workload -- score --> k8s-service-account
 ```
 
 Current resource graph (FIXME):
