@@ -127,7 +127,7 @@ entity:
     - {}
 EOF
 
-humctl create \
+humctl apply \
     -f gsa.yaml
 ```
 

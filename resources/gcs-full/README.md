@@ -7,6 +7,9 @@ This GCS setup (i.e. `gcs` resource definition) needs other resource definitions
 Remaining tasks:
 - Test with shared GCS
 - Test with Operator
+- Change the GSA name, needs to be `workload-k8s-namespace` format for unicity
+- Optimize the resource graph (2 `configs` instead of 1 and 3 `k8s-service-accounts` instead of 1)
+- Remove the `gsa` in Score, Dev shouldn't provide this
 
 Current resource graph:
 
@@ -152,7 +155,7 @@ entity:
     - {}
 EOF
 
-humctl create \
+humctl apply \
     -f gcs-full.yaml
 ```
 
