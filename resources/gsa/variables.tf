@@ -25,8 +25,12 @@ variable "workload_identity" {
   default   = null
 }
 
-variable "roles" {
+variable "gcs_iam_members" {
   description = "List of roles to assign to the GSA."
-  type        = set(string)
   default     = []
+  
+  type        = set(object({
+    bucket_name   = string
+    role          = string
+  }))
 }

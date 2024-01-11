@@ -19,11 +19,11 @@ resource "google_service_account_iam_member" "wi" {
   member              = "serviceAccount:${var.workload_identity.gke_project_id}.svc.id.goog[${var.workload_identity.namespace}/${var.workload_identity.ksa}]"
 }
 
-# https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/google_service_account_iam
-resource "google_project_iam_member" "roles" {
-  for_each = var.roles
+# https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket_iam
+resource "google_storage_bucket_iam_member" "gcs_iam_members" {
+  for_each = {for i, v in var.gcs_iam_members:  i => v}
 
-  project = var.project_id
-  role    = each.key
+  role    = each.value.role
+  bucket  = each.value.bucket_name
   member  = "serviceAccount:${google_service_account.gsa.email}"
 }

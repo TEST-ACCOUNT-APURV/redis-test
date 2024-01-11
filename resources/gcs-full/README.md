@@ -9,7 +9,7 @@ Remaining tasks:
 - Test with Operator
 - Change the GSA name, needs to be `workload-k8s-namespace` format for unicity
 - Optimize the resource graph (2 `configs` instead of 1 and 3 `k8s-service-accounts` instead of 1)
-- Remove the `gsa` in Score, Dev shouldn't provide this
+- Support read versus write roles
 
 Targeted resource graphs:
 ```mermaid
@@ -152,13 +152,11 @@ entity:
       variables:
         project_id: \${resources['config.default#config'].outputs.project_id}
         region: \${resources['config.default#config'].outputs.region}
-        namespace: \${resources['k8s-namespace.default#k8s-namespace'].outputs.namespace}
-        gsa_email: \${resources['gcp-service-account.default#gcp-service-account'].outputs.email}
     secrets:
       variables:
         credentials: \${resources.config.default#config.outputs.credentials}
   provision:
-    aws-policy:
+    aws-policy.gcs:
       is_dependent: false
       match_dependents: true
   criteria:
@@ -167,6 +165,29 @@ EOF
 
 humctl apply \
     -f gcs-full.yaml
+```
+
+### Create the `aws-policy` resource definition
+
+```bash
+cat <<EOF > gcs-admin-iam-member.yaml
+apiVersion: entity.humanitec.io/v1b1
+kind: Definition
+metadata:
+  id: gcs-admin-iam-member
+object:
+  type: aws-policy
+  driver_type: humanitec/config
+  driver_inputs:
+    values:
+      name: ${resources.gcs.outputs.name}
+      role: "roles/storage.admin"
+  criteria:
+  - class: gcs
+EOF
+
+humctl apply \
+    -f gcs-admin-iam-member.yaml
 ```
 
 ### Create the `gcp-service-account` resource definition
@@ -191,6 +212,7 @@ entity:
       variables:
         project_id: \${resources.config.outputs.project_id}
         name_prefix: {{ index (regexSplit "\\\\." "\$\${context.res.id}" -1) 1 }}
+        gcs_iam_members: \${resources.workload>aws-policy}
         workload_identity:
           gke_project_id: \${resources.k8s-cluster.outputs.project_id}
           namespace: \${resources.k8s-namespace.outputs.namespace}
