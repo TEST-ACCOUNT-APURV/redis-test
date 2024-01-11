@@ -11,13 +11,13 @@ Remaining tasks:
 - Optimize the resource graph (2 `configs` instead of 1 and 3 `k8s-service-accounts` instead of 1)
 - Remove the `gsa` in Score, Dev shouldn't provide this
 
-Targeted resource graph:
+Targeted resource graphs:
 ```mermaid
 graph LR
+  workload -- score --> gcs
   workload -- references --> k8s-service-account
   k8s-service-account -- references --> google-service-account
-  gcs -- references --> google-service-account
-  workload -- score --> gcs
+  google-service-account -- selects --> gcs
 ```
 
 Current resource graph (FIXME):
