@@ -6,8 +6,12 @@ This GCS setup (i.e. `gcs` resource definition) needs other resource definitions
 - `aws-policy` (temporary, by waiting for `gcp-iam-member`)
 
 Remaining tasks:
+- TODOS:
+  - Avoid hard-coding the role in GSA TF
+  - Change `aws-policy` by associated new GCP resource type (`gcp-iam-member`?)
+  - ksa name in GSA (for WI binding) is assuming that this is the Workload name...
 - Test with shared GCS
-- Test with Operator
+- Test with Operator (`k8s-cluster` ref won't work)
 - Support read versus write roles
 - Test with Workload without any GSA WI need
 - Test with Workload with Spanner and GCS
