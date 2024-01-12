@@ -10,6 +10,7 @@ Remaining tasks:
   - Avoid hard-coding the role in GSA TF
   - Change `aws-policy` by associated new GCP resource type (`gcp-iam-member`?)
   - ksa name in GSA (for WI binding) is assuming that this is the Workload name...
+  - if then else in ksa and workload
 - Test with shared GCS
 - Test with Operator (`k8s-cluster` ref won't work)
 - Support read versus write roles
