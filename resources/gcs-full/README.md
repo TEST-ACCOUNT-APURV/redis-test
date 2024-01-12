@@ -285,7 +285,7 @@ entity:
               kind: ServiceAccount
               metadata:
                 annotations:
-                  iam.gke.io/gcp-service-account: \${resources['gcp-service-account.default#gcp-service-account'].outputs.email}
+                  iam.gke.io/gcp-service-account: \${resources.gcp-service-account.outputs.email}
                 name: {{ .init.name }}
         outputs: |
           name: {{ .init.name }}
