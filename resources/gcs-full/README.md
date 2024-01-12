@@ -125,9 +125,10 @@ entity:
   criteria:
     - app_id: ${APP}
       env_id: ${ENVIRONMENT}
+      res_id: app-config
 EOF
 
-humctl create \
+humctl apply \
     -f ${APP}-${ENVIRONMENT}-config.yaml
 ```
 
@@ -152,13 +153,13 @@ entity:
         rev: refs/heads/rework
         url: https://github.com/Humanitec-DemoOrg/google-cloud-reference-architecture.git
       variables:
-        project_id: \${resources['config.default#config'].outputs.project_id}
-        region: \${resources['config.default#config'].outputs.region}
+        project_id: \${resources['config.default#app-config'].outputs.project_id}
+        region: \${resources['config.default#app-config'].outputs.region}
     secrets:
       variables:
-        credentials: \${resources['config.default#config'].outputs.credentials}
+        credentials: \${resources['config.default#app-config'].outputs.credentials}
   provision:
-    aws-policy.gcs:
+    aws-policy:
       is_dependent: false
       match_dependents: true
   criteria:
@@ -185,10 +186,10 @@ entity:
     values:
       templates:
         outputs: |
-          name: \${resources.gcs.outputs.name}
+          resource_name: \${resources.gcs.outputs.name}
           role: "roles/storage.admin"
   criteria:
-  - class: gcs
+  - {}
 EOF
 
 humctl apply \
@@ -209,60 +210,22 @@ entity:
   driver_type: humanitec/terraform
   driver_inputs:
     values:
-      workload_name: gcs-test
       append_logs_to_error: true
       source:
         path: resources/gsa
         rev: refs/heads/rework
         url: https://github.com/Humanitec-DemoOrg/google-cloud-reference-architecture.git
       variables:
-        project_id: \${resources.config.outputs.project_id}
-        name_prefix: \${.driver.values.workload_name}
-        gcs_iam_members: \${resources.workload>aws-policy}
+        project_id: \${resources['config.default#app-config'].outputs.project_id}
+        iam_member_resource_names: \${resources.workload>aws-policy.resource_name}
+        iam_member_roles: \${resources.workload>aws-policy.role}
+        res_id: \${context.res.id}
         workload_identity:
           gke_project_id: \${resources.k8s-cluster.outputs.project_id}
           namespace: \${resources.k8s-namespace.outputs.namespace}
-          ksa: \${.driver.values.workload_name}
     secrets:
       variables:
-        credentials: \${resources.config.outputs.credentials}
-  criteria:
-    - {}
-EOF
-
-humctl apply \
-    -f gsa.yaml
-```
-
-```bash
-cat <<EOF > gsa.yaml
-apiVersion: entity.humanitec.io/v1b1
-kind: Definition
-metadata:
-  id: gsa
-entity:
-  name: gsa
-  type: gcp-service-account
-  driver_type: humanitec/terraform
-  driver_inputs:
-    values:
-      workload_name: {{ index (regexSplit "\\\\." "\$\${context.res.id}" -1) 1 }}
-      append_logs_to_error: true
-      source:
-        path: resources/gsa
-        rev: refs/heads/rework
-        url: https://github.com/Humanitec-DemoOrg/google-cloud-reference-architecture.git
-      variables:
-        project_id: \${resources.config.outputs.project_id}
-        name_prefix: \${.driver.values.workload_name}
-        gcs_iam_members: \${resources.workload>aws-policy}
-        workload_identity:
-          gke_project_id: \${resources.k8s-cluster.outputs.project_id}
-          namespace: \${resources.k8s-namespace.outputs.namespace}
-          ksa: \${.driver.values.workload_name}
-    secrets:
-      variables:
-        credentials: \${resources.config.outputs.credentials}
+        credentials: \${resources['config.default#app-config'].outputs.credentials}
   criteria:
     - {}
 EOF
@@ -290,7 +253,7 @@ entity:
           update:
             - op: add
               path: /spec/serviceAccountName
-              value: \${resources.k8s-service-account.outputs.name}
+              value: \${resources['k8s-service-account.default'].outputs.name}
   criteria:
     - {}
 EOF
@@ -324,7 +287,7 @@ entity:
               kind: ServiceAccount
               metadata:
                 annotations:
-                  iam.gke.io/gcp-service-account: \${resources.[gcp-service-account.default#gcp-service-account].outputs.email}
+                  iam.gke.io/gcp-service-account: \${resources[gcp-service-account.default#gcp-service-account].outputs.email}
                 name: {{ .init.name }}
         outputs: |
           name: {{ .init.name }}
