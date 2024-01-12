@@ -31,7 +31,7 @@ graph LR
 
 Generated resource graph:
 
-FIXME
+![](resource-graph.png)
 
 ```bash
 cd resources/gcs-full
