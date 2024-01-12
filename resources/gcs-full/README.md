@@ -216,7 +216,7 @@ entity:
         url: https://github.com/Humanitec-DemoOrg/google-cloud-reference-architecture.git
       variables:
         project_id: \${resources['config.default#app-config'].outputs.project_id}
-        iam_member_resource_names: \${resources.workload>aws-policy.resource_name}
+        iam_member_resource_names: \${resources.workload>aws-policy.outputs.resource_name}
         res_id: \${context.res.id}
         workload_identity:
           gke_project_id: \${resources.k8s-cluster.outputs.project_id}
