@@ -209,6 +209,43 @@ entity:
   driver_type: humanitec/terraform
   driver_inputs:
     values:
+      workload_name: gcs-test
+      append_logs_to_error: true
+      source:
+        path: resources/gsa
+        rev: refs/heads/rework
+        url: https://github.com/Humanitec-DemoOrg/google-cloud-reference-architecture.git
+      variables:
+        project_id: \${resources.config.outputs.project_id}
+        name_prefix: \${.driver.values.workload_name}
+        gcs_iam_members: \${resources.workload>aws-policy}
+        workload_identity:
+          gke_project_id: \${resources.k8s-cluster.outputs.project_id}
+          namespace: \${resources.k8s-namespace.outputs.namespace}
+          ksa: \${.driver.values.workload_name}
+    secrets:
+      variables:
+        credentials: \${resources.config.outputs.credentials}
+  criteria:
+    - {}
+EOF
+
+humctl apply \
+    -f gsa.yaml
+```
+
+```bash
+cat <<EOF > gsa.yaml
+apiVersion: entity.humanitec.io/v1b1
+kind: Definition
+metadata:
+  id: gsa
+entity:
+  name: gsa
+  type: gcp-service-account
+  driver_type: humanitec/terraform
+  driver_inputs:
+    values:
       workload_name: {{ index (regexSplit "\\\\." "\$\${context.res.id}" -1) 1 }}
       append_logs_to_error: true
       source:
@@ -230,7 +267,7 @@ entity:
     - {}
 EOF
 
-humctl create \
+humctl apply \
     -f gsa.yaml
 ```
 
@@ -258,7 +295,7 @@ entity:
     - {}
 EOF
 
-humctl create \
+humctl apply \
     -f custom-workload.yaml
 ```
 
@@ -295,7 +332,7 @@ entity:
     - {}
 EOF
 
-humctl create \
+humctl apply \
     -f custom-service-account.yaml
 ```
 
