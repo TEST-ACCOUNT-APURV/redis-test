@@ -187,7 +187,6 @@ entity:
       templates:
         outputs: |
           resource_name: \${resources.gcs.outputs.name}
-          role: "roles/storage.admin"
   criteria:
   - {}
 EOF
@@ -218,7 +217,6 @@ entity:
       variables:
         project_id: \${resources['config.default#app-config'].outputs.project_id}
         iam_member_resource_names: \${resources.workload>aws-policy.resource_name}
-        iam_member_roles: \${resources.workload>aws-policy.role}
         res_id: \${context.res.id}
         workload_identity:
           gke_project_id: \${resources.k8s-cluster.outputs.project_id}
@@ -253,7 +251,7 @@ entity:
           update:
             - op: add
               path: /spec/serviceAccountName
-              value: \${resources['k8s-service-account.default'].outputs.name}
+              value: \${resources['k8s-service-account'].outputs.name}
   criteria:
     - {}
 EOF
@@ -287,7 +285,7 @@ entity:
               kind: ServiceAccount
               metadata:
                 annotations:
-                  iam.gke.io/gcp-service-account: \${resources[gcp-service-account.default#gcp-service-account].outputs.email}
+                  iam.gke.io/gcp-service-account: \${resources['gcp-service-account.default#gcp-service-account'].outputs.email}
                 name: {{ .init.name }}
         outputs: |
           name: {{ .init.name }}

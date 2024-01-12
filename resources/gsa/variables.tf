@@ -9,8 +9,8 @@ variable "project_id" {
   type        = string
 }
 
-variable "name_prefix" {
-  description = "The prefix of the Name of the GSA."
+variable "res_id" {
+  description = "The ID of the resource (i.e. modules.workload-id.externals.resource-id)."
   type        = string
 }
 
@@ -19,18 +19,13 @@ variable "workload_identity" {
   type = object({
     gke_project_id  = string
     namespace       = string
-    ksa             = string
   })
   sensitive = true
   default   = null
 }
 
-variable "gcs_iam_members" {
-  description = "List of roles to assign to the GSA."
+variable "iam_member_resource_names" {
+  description = "List of resource names for the IAM Role bindings to assign to the GSA."
+  type        = set(string)
   default     = []
-  
-  type        = set(object({
-    bucket_name   = string
-    role          = string
-  }))
 }
