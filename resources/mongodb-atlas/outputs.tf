@@ -1,4 +1,4 @@
 output "connection" {
-  value     = mongodbatlas_cluster.cluster.connection_strings[0].standard
+  value     = mongodbatlas_cluster.cluster.connection_strings
   sensitive = true
 }
