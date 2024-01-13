@@ -1,5 +1,5 @@
 ```bash
-cd resources/mongodb-atlas
+cd resources/mongodb-atlas-new
 
 ATLAS_PUBLIC_KEY=FIXME
 ATLAS_PRIVATE_KEY=FIXME
@@ -33,20 +33,20 @@ HUMANITEC_ENVIRONMENT=FIXME
 ```
 
 ```bash
-cat <<EOF > mongodb-atlas.yaml
+cat <<EOF > mongodb-atlas-new.yaml
 apiVersion: entity.humanitec.io/v1b1
 kind: Definition
 metadata:
-  id: mongodb-atlas
+  id: mongodb-atlas-new
 entity:
-  name: mongodb-atlas
+  name: mongodb-atlas-new
   type: postgres
   driver_type: humanitec/terraform
   driver_inputs:
     values:
       append_logs_to_error: true
       source:
-        path: resources/mongodb-atlas
+        path: resources/mongodb-atlas-new
         rev: refs/heads/main
         url: https://github.com/Humanitec-DemoOrg/google-cloud-reference-architecture.git
       variables:
@@ -63,5 +63,5 @@ EOF
 
 ```bash
 humctl create \
-    -f mongodb-atlas.yaml
+    -f mongodb-atlas-new.yaml
 ```
