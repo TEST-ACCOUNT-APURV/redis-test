@@ -26,6 +26,12 @@ variable "workload_identity" {
 
 variable "iam_member_resource_names" {
   description = "List of resource names for the IAM Role bindings to assign to the GSA."
-  type        = set(string)
+  type        = list(string)
+  default     = []
+}
+
+variable "iam_member_roles" {
+  description = "List of roles for the IAM Role bindings to assign to the GSA."
+  type        = list(string)
   default     = []
 }

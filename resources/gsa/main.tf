@@ -26,9 +26,9 @@ resource "google_service_account_iam_member" "wi" {
 
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket_iam
 resource "google_storage_bucket_iam_member" "gcs_iam_members" {
-  for_each = var.iam_member_resource_names
+  count   = length(var.iam_member_resource_names)
 
-  role    = "roles/storage.admin"
-  bucket  = each.key
+  role    = var.iam_member_roles[count.index]
+  bucket  = var.iam_member_resource_names[count.index]
   member  = "serviceAccount:${google_service_account.gsa.email}"
 }

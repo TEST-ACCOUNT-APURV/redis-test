@@ -7,10 +7,10 @@ This GCS setup (i.e. `gcs` resource definition) needs other resource definitions
 
 Remaining tasks:
 - TODOS:
-  - Avoid hard-coding the role in GSA TF
   - Change `aws-policy` by associated new GCP resource type (`gcp-iam-member`?)
   - ksa name in GSA (for WI binding) is assuming that this is the Workload name...
   - if then else in ksa and workload
+  - Support other resource types in GSA (iam members)
 - Test with shared GCS
 - Test with Operator (`k8s-cluster` ref won't work)
 - Support read versus write roles
@@ -192,6 +192,7 @@ entity:
       templates:
         outputs: |
           resource_name: \${resources.gcs.outputs.name}
+          role: "roles/storage.admin"
   criteria:
   - {}
 EOF
@@ -222,6 +223,7 @@ entity:
       variables:
         project_id: \${resources['config.default#app-config'].outputs.project_id}
         iam_member_resource_names: \${resources.workload>aws-policy.outputs.resource_name}
+        iam_member_roles: \${resources.workload>aws-policy.outputs.role}
         res_id: \${context.res.id}
         workload_identity:
           gke_project_id: \${resources.k8s-cluster.outputs.project_id}
