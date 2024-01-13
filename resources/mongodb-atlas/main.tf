@@ -5,6 +5,20 @@ resource "random_string" "mongodbatlas_cluster_name" {
   upper   = true
 }
 
+resource "random_string" "mongodbatlas_cluster_username" {
+  length  = 10
+  special = false
+  lower   = true
+  upper   = true
+}
+
+resource "random_string" "mongodbatlas_cluster_password" {
+  length  = 20
+  special = false
+  lower   = true
+  upper   = true
+}
+
 # https://registry.terraform.io/providers/mongodb/mongodbatlas/latest/docs/resources/cluster
 resource "mongodbatlas_cluster" "cluster" {
   project_id                  = var.project_id
@@ -18,8 +32,8 @@ resource "mongodbatlas_cluster" "cluster" {
 
 # https://registry.terraform.io/providers/mongodb/mongodbatlas/latest/docs/resources/database_user
 resource "mongodbatlas_database_user" "user" {
-  username           = "test-acc-username"
-  password           = "test-acc-password"
+  username           = random_string.mongodbatlas_cluster_username.result
+  password           = random_string.mongodbatlas_cluster_password.result
   project_id         = var.project_id
   auth_database_name = "admin"
 
