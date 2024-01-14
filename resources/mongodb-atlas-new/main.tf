@@ -14,7 +14,7 @@ resource "random_string" "mongodbatlas_cluster_username" {
 
 resource "random_string" "mongodbatlas_cluster_password" {
   length  = 20
-  special = false
+  special = true
   lower   = true
   upper   = true
 }
@@ -41,4 +41,12 @@ resource "mongodbatlas_database_user" "user" {
     role_name     = "readWriteAnyDatabase"
     database_name = "admin"
   }
+}
+
+# https://registry.terraform.io/providers/mongodb/mongodbatlas/latest/docs/resources/project_ip_access_list
+resource "mongodbatlas_project_ip_access_list" "ips" {
+  for_each = var.ip_access_list
+  
+  project_id = var.project_id
+  ip_address = each.key
 }

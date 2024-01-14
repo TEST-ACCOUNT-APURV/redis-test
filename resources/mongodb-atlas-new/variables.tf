@@ -42,3 +42,9 @@ variable "provider_instance_size_name" {
   default     = "M0"
   type        = string
 }
+
+variable "ip_access_list" {
+  description = "List of the IP addresses to allow on the Atlas project."
+  type        = set(string)
+  default     = []
+}
