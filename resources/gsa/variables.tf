@@ -24,14 +24,13 @@ variable "workload_identity" {
   default   = null
 }
 
-variable "iam_member_resource_names" {
-  description = "List of resource names for the IAM Role bindings to assign to the GSA."
-  type        = list(string)
-  default     = []
-}
-
-variable "iam_member_roles" {
-  description = "List of roles for the IAM Role bindings to assign to the GSA."
-  type        = list(string)
-  default     = []
+variable "iam_members" {
+  description = "The lists (scopes, resource_names and roles) for the IAM Role bindings to assign to the GSA."
+  type = object({
+    scopes          = list(string)
+    resource_names  = list(string)
+    roles           = list(string)
+  })
+  sensitive = true
+  default   = null
 }
