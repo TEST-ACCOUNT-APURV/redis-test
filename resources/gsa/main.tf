@@ -11,7 +11,7 @@ resource "random_string" "name_suffix" {
 
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/google_service_account
 resource "google_service_account" "gsa" {
-  count         = var.iam_members == null ? 0 : 1
+  count         = var.iam_members == null && length(var.iam_members.resource_names) == 0 ? 0 : 1
   display_name  = "${local.gsa_name} service account"
   account_id    = "${local.gsa_name}-${random_string.name_suffix.result}"
 }
