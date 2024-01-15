@@ -40,6 +40,7 @@ Should return a GSA:
 gcloud iam service-accounts list | grep gcs-workload
 ```
 
+Generated resource graph:
 ![](./images/gcs.png)
 
 ## Deploy without GCS
@@ -65,6 +66,7 @@ Shouldn't return a GSA:
 gcloud iam service-accounts list | grep no-gcs-workload
 ```
 
+Generated resource graph:
 ![](./images/no-gcs.png)
 
 ## Deploy with 2 GCS
@@ -106,4 +108,5 @@ Should return a GSA:
 gcloud iam service-accounts list | grep two-gcs-workload
 ```
 
+Generated resource graph:
 ![](./images/2-gcs.png)
