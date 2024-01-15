@@ -21,7 +21,7 @@ Remaining tasks:
 - Test with shared GCS between 2 Workloads
 - Support read versus write roles
 - Test with Workload with Spanner and GCS
-- Test with Operator (`k8s-cluster` ref won't work)
+- Test with Operator (`k8s-cluster` and `k8s-namespace` refs won't work)
 - ksa name in GSA (for WI binding) is assuming that this is the Workload name...
 - Change `aws-policy` by associated new GCP resource type (`gcp-iam-member`?)
 
