@@ -5,16 +5,6 @@ This GCS setup (i.e. `gcs` resource definition) needs other resource definitions
 - `config`
 - `aws-policy` (temporary, by waiting for `gcp-iam-member`)
 
-Remaining tasks:
-- Test with Workload with 2 GCS
-- Test with shared GCS between 2 Workloads
-- Support read versus write roles
-- Test with Workload with Spanner and GCS
-- Test with Operator (`k8s-cluster` ref won't work)
-- ksa name in GSA (for WI binding) is assuming that this is the Workload name...
-- Change `aws-policy` by associated new GCP resource type (`gcp-iam-member`?)
-
-Targeted resource graphs:
 ```mermaid
 graph LR
   workload -- score --> gcs
@@ -25,9 +15,15 @@ graph LR
   google-service-account -- selects --> aws-policy
 ```
 
-Generated resource graph:
+More tests and scenarios could be found [here](./tests/).
 
-![](resource-graph.png)
+Remaining tasks:
+- Test with shared GCS between 2 Workloads
+- Support read versus write roles
+- Test with Workload with Spanner and GCS
+- Test with Operator (`k8s-cluster` ref won't work)
+- ksa name in GSA (for WI binding) is assuming that this is the Workload name...
+- Change `aws-policy` by associated new GCP resource type (`gcp-iam-member`?)
 
 ```bash
 cd resources/gcs-full

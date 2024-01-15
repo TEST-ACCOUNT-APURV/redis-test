@@ -1,0 +1,28 @@
+apiVersion: score.dev/v1b1
+metadata:
+  name: two-gcs-workload
+containers:
+  two-gcs-workload:
+    image: registry.humanitec.io/public/resource-pack-tester
+    command: ["/opt/service/gcsapp"]
+    variables:
+      PORT: "3000"
+      BUCKET_NAME: ${resources.gcs-1.name}
+    livenessProbe:
+      httpGet:
+        path: /health
+        port: 3000
+    readinessProbe:
+      httpGet:
+        path: /alive
+        port: 3000
+service:
+  ports:
+    http:
+      port: 3000
+      targetPort: 3000
+resources:
+  gcs-1:
+    type: gcs
+  gcs-2:
+    type: gcs
