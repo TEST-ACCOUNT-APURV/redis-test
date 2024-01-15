@@ -40,6 +40,17 @@ Should return a GSA:
 gcloud iam service-accounts list | grep gcs-workload
 ```
 
+Should retourn a GCS:
+```bash
+gcloud storage buckets list \
+    | grep $(humctl get active-resources \
+        --env ${ENVIRONMENT} \
+        --app ${APP} \
+        -o json \
+        | jq '. | map(. | select(.metadata.type == "gcs" and .metadata.res_id == "modules.gcs-workload.externals.gcs"))' \
+        | jq -r .[0].status.resource.name)
+```
+
 Generated resource graph:
 ![](./images/gcs.png)
 
@@ -106,6 +117,28 @@ kubectl get sa two-gcs-workload \
 Should return a GSA:
 ```bash
 gcloud iam service-accounts list | grep two-gcs-workload
+```
+
+Should retourn a 1st GCS:
+```bash
+gcloud storage buckets list \
+    | grep $(humctl get active-resources \
+        --env ${ENVIRONMENT} \
+        --app ${APP} \
+        -o json \
+        | jq '. | map(. | select(.metadata.type == "gcs" and .metadata.res_id == "modules.two-gcs-workload.externals.gcs-1"))' \
+        | jq -r .[0].status.resource.name)
+```
+
+Should retourn a 2nd GCS:
+```bash
+gcloud storage buckets list \
+    | grep $(humctl get active-resources \
+        --env ${ENVIRONMENT} \
+        --app ${APP} \
+        -o json \
+        | jq '. | map(. | select(.metadata.type == "gcs" and .metadata.res_id == "modules.two-gcs-workload.externals.gcs-2"))' \
+        | jq -r .[0].status.resource.name)
 ```
 
 Generated resource graph:
