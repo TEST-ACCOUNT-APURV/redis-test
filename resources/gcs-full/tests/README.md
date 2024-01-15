@@ -7,6 +7,16 @@ ENVIRONMENT=FIXME
 
 ## Deploy with GCS
 
+```mermaid
+graph LR
+  workload -- score --> gcs
+  gcs -- co-provisions -->  aws-policy
+  aws-policy -- references --> gcs
+  workload -- references --> k8s-service-account
+  k8s-service-account -- references --> google-service-account
+  google-service-account -- selects --> aws-policy
+```
+
 ```bash
 make with-gcs
 ```
@@ -31,6 +41,11 @@ gcloud iam service-accounts list | grep gcs-workload
 ```
 
 ## Deploy without GCS
+
+```mermaid
+graph LR
+  workload -- references --> k8s-service-account
+```
 
 ```bash
 make without-gcs

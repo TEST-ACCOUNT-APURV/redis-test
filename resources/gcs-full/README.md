@@ -6,15 +6,13 @@ This GCS setup (i.e. `gcs` resource definition) needs other resource definitions
 - `aws-policy` (temporary, by waiting for `gcp-iam-member`)
 
 Remaining tasks:
-- TODOS:
-  - Change `aws-policy` by associated new GCP resource type (`gcp-iam-member`?)
-  - ksa name in GSA (for WI binding) is assuming that this is the Workload name...
-  - Support other resource types in GSA (iam members)
-- Test with shared GCS
-- Test with Operator (`k8s-cluster` ref won't work)
+- Test with Workload with 2 GCS
+- Test with shared GCS between 2 Workloads
 - Support read versus write roles
 - Test with Workload with Spanner and GCS
-- Test with Workload with 2 GCS
+- Test with Operator (`k8s-cluster` ref won't work)
+- ksa name in GSA (for WI binding) is assuming that this is the Workload name...
+- Change `aws-policy` by associated new GCP resource type (`gcp-iam-member`?)
 
 Targeted resource graphs:
 ```mermaid
