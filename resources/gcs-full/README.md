@@ -9,12 +9,10 @@ Remaining tasks:
 - TODOS:
   - Change `aws-policy` by associated new GCP resource type (`gcp-iam-member`?)
   - ksa name in GSA (for WI binding) is assuming that this is the Workload name...
-  - if then else in ksa and workload
   - Support other resource types in GSA (iam members)
 - Test with shared GCS
 - Test with Operator (`k8s-cluster` ref won't work)
 - Support read versus write roles
-- Test with Workload without any GSA WI need
 - Test with Workload with Spanner and GCS
 - Test with Workload with 2 GCS
 
@@ -191,6 +189,7 @@ entity:
     values:
       templates:
         outputs: |
+          scope: "gcs"
           resource_name: \${resources.gcs.outputs.name}
           role: "roles/storage.admin"
   criteria:
@@ -222,8 +221,10 @@ entity:
         url: https://github.com/Humanitec-DemoOrg/google-cloud-reference-architecture.git
       variables:
         project_id: \${resources['config.default#app-config'].outputs.project_id}
-        iam_member_resource_names: \${resources.workload>aws-policy.outputs.resource_name}
-        iam_member_roles: \${resources.workload>aws-policy.outputs.role}
+        iam_members:
+          scopes: \${resources.workload>aws-policy.outputs.scope}
+          resource_names: \${resources.workload>aws-policy.outputs.resource_name}
+          roles: \${resources.workload>aws-policy.outputs.role}
         res_id: \${context.res.id}
         workload_identity:
           gke_project_id: \${resources.k8s-cluster.outputs.project_id}
@@ -281,6 +282,7 @@ entity:
   driver_type: humanitec/template
   driver_inputs:
     values:
+      roleBindingsArray: \${resources.workload>aws-policy.outputs.resource_name}
       templates:
         init: |
           name: {{ index (regexSplit "\\\\." "\$\${context.res.id}" -1) 1 }}
@@ -291,8 +293,10 @@ entity:
               apiVersion: v1
               kind: ServiceAccount
               metadata:
+                {{- if len .driver.values.roleBindingsArray }}
                 annotations:
                   iam.gke.io/gcp-service-account: \${resources.gcp-service-account.outputs.email}
+                {{- end }}
                 name: {{ .init.name }}
         outputs: |
           name: {{ .init.name }}
@@ -302,17 +306,4 @@ EOF
 
 humctl apply \
     -f custom-service-account.yaml
-```
-
-## Deploy the sample app using this GCS setup
-
-```bash
-score-humanitec delta \
-    --app ${APP} \
-    --env ${ENVIRONMENT} \
-    --org ${HUMANITEC_ORG} \
-    --token ${HUMANITEC_TOKEN} \
-    --deploy \
-    --retry \
-    -f score.yaml
 ```
