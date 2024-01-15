@@ -19,7 +19,7 @@ resource "google_service_account" "gsa" {
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/google_service_account_iam
 resource "google_service_account_iam_member" "wi" {
   count               = var.workload_identity == null || var.iam_members == null || length(var.iam_members.resource_names) == 0 ? 0 : 1
-  service_account_id  = google_service_account.gsa[1].name
+  service_account_id  = google_service_account.gsa[0].name
   role                = "roles/iam.workloadIdentityUser"
   member              = "serviceAccount:${var.workload_identity.gke_project_id}.svc.id.goog[${var.workload_identity.namespace}/${local.gsa_name}]"
 }
@@ -30,5 +30,5 @@ resource "google_storage_bucket_iam_member" "gcs_iam_members" {
 
   role    = var.iam_members.roles[count.index]
   bucket  = var.iam_members.resource_names[count.index]
-  member  = "serviceAccount:${google_service_account.gsa[1].email}"
+  member  = "serviceAccount:${google_service_account.gsa[0].email}"
 }
