@@ -18,7 +18,7 @@ resource "google_service_account" "gsa" {
 
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/google_service_account_iam
 resource "google_service_account_iam_member" "wi" {
-  count               = var.workload_identity == null ? 0 : 1
+  count               = var.workload_identity == null && var.iam_members == null && length(var.iam_members.resource_names) == 0 ? 0 : 1
   service_account_id  = google_service_account.gsa[1].name
   role                = "roles/iam.workloadIdentityUser"
   member              = "serviceAccount:${var.workload_identity.gke_project_id}.svc.id.goog[${var.workload_identity.namespace}/${local.gsa_name}]"
