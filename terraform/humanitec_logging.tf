@@ -17,12 +17,6 @@ resource "humanitec_resource_definition" "gcp_logging" {
     })
   }
 
-  lifecycle {
-    ignore_changes = [
-      criteria
-    ]
-  }
-
   depends_on = [humanitec_resource_definition.gke]
 }
 

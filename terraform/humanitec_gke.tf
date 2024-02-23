@@ -17,12 +17,6 @@ resource "humanitec_resource_definition" "gke" {
       "credentials" = jsondecode(base64decode(google_service_account_key.gke_cluster_access_key.private_key))
     })
   }
-
-  lifecycle {
-    ignore_changes = [
-      criteria
-    ]
-  }
 }
 
 resource "humanitec_resource_definition_criteria" "gke" {

@@ -21,12 +21,6 @@ resource "humanitec_resource_definition" "gcp_dynamic_memorystore_redis" {
       credentials = "FIXME"
     })
   }
-
-  lifecycle {
-    ignore_changes = [
-      criteria
-    ]
-  }
 }
 
 #resource "humanitec_resource_definition_criteria" "gcp_dynamic_memorystore_redis" {

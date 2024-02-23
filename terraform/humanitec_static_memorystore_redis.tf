@@ -17,12 +17,6 @@ resource "humanitec_resource_definition" "gcp_echo_memorystore_redis" {
       password = google_redis_instance.memorystore.auth_string
     })
   }
-
-  lifecycle {
-    ignore_changes = [
-      criteria
-    ]
-  }
 }
 
 #resource "humanitec_resource_definition_criteria" "gcp_echo_memorystore_redis" {
