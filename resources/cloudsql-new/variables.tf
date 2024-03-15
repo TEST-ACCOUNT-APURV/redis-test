@@ -42,3 +42,9 @@ variable "port" {
   type        = number
   default     = 5432
 }
+
+variable "private_ip" {
+  description = "The Cloud SQL Instance password"
+  type        = bool
+  default     = true
+}

@@ -1,5 +1,5 @@
 output "host" {
-  value = data.google_sql_database_instance.instance.private_ip_address
+  value = var.private_ip ? data.google_sql_database_instance.instance.private_ip_address : data.google_sql_database_instance.instance.public_ip_address
 }
 
 output "port" {

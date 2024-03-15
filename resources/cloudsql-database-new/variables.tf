@@ -31,3 +31,9 @@ variable "password" {
   type        = string
   sensitive   = true
 }
+
+variable "private_ip" {
+  description = "The Cloud SQL Instance password"
+  type        = bool
+  default     = true
+}
