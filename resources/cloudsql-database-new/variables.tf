@@ -14,6 +14,12 @@ variable "instance_name" {
   type        = string
 }
 
+variable "port" {
+  description = "The Cloud SQL Instance port"
+  type        = number
+  default     = 5432
+}
+
 variable "username" {
   description = "The Cloud SQL Instance username"
   type        = string
