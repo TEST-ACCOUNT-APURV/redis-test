@@ -1,5 +1,9 @@
+output "instance" {
+  value = google_sql_database_instance.instance.name
+}
+
 output "host" {
-  value = google_sql_database_instance.instance.public_ip_address
+  value = google_sql_database_instance.instance.private_ip_address
 }
 
 output "port" {
@@ -17,5 +21,5 @@ output "password" {
 }
 
 output "name" {
-  value     = google_sql_database.database.name
+  value = google_sql_database.database.name
 }
