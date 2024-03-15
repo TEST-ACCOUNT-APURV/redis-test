@@ -32,9 +32,9 @@ variable "tier" {
   default     = "db-f1-micro"
 }
 
-variable "private_network" {
-  description = "The Cloud SQL private network (VPC)"
-  type        = string
+variable "authorized_networks" {
+  type    = list
+  default = ["0.0.0.0/0"]
 }
 
 variable "port" {
