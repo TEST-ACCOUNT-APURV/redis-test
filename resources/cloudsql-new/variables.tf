@@ -36,3 +36,9 @@ variable "private_network" {
   description = "The Cloud SQL private network (VPC)"
   type        = string
 }
+
+variable "port" {
+  description = "The Cloud SQL Instance port"
+  type        = number
+  default     = 5432
+}
