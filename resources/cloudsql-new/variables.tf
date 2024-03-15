@@ -31,3 +31,8 @@ variable "tier" {
   type        = string
   default     = "db-f1-micro"
 }
+
+variable "private_network" {
+  description = "The Cloud SQL private network (VPC)"
+  type        = string
+}
