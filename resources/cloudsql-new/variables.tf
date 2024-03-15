@@ -31,8 +31,3 @@ variable "tier" {
   type        = string
   default     = "db-f1-micro"
 }
-
-variable "authorized_networks" {
-  type    = list
-  default = ["0.0.0.0/0"]
-}
