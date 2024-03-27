@@ -40,7 +40,7 @@ metadata:
   id: mongodb-atlas-new
 entity:
   name: mongodb-atlas-new
-  type: postgres
+  type: mongo
   driver_type: humanitec/terraform
   driver_inputs:
     values:
