@@ -1,6 +1,6 @@
 variable "credentials" {
   description = "The credentials for connecting to Google Cloud."
-  type        = map
+  type        = string
   sensitive   = true
 }
 
