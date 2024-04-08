@@ -1,7 +1,10 @@
 variable "credentials" {
-  description = "The credentials for connecting to Google Cloud."
-  type        = map
-  sensitive   = true
+description = "GCP credentials"
+type = map
+default = {
+"store" = "your-gsm-2-secret-store"
+"ref" = "svc-gcp-tf-48hours"
+}
 }
 
 variable "project_id" {
