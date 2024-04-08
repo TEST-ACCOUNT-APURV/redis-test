@@ -11,7 +11,7 @@ resource "google_redis_instance" "memorystore" {
   memory_size_gb      = 1
   redis_version       = "REDIS_7_0"
   region              = var.region
-  auth_enabled        = true
+  auth_enabled        = false
   authorized_network  = data.google_compute_network.vpc.id
 }
 
