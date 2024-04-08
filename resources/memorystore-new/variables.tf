@@ -1,6 +1,6 @@
 variable "credentials" {
 description = "GCP credentials"
-type = string
+type = map
 default = {
 "store" = "your-gsm-2-secret-store"
 "ref" = "svc-gcp-tf-48hours"
